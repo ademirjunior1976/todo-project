@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head><title th:text="${tituloLista}">Tarefas</title></head>
+<body>
+<main layout:fragment="content">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title" th:text="${tituloLista}">Gestão de Tarefas</h1>
+            <p class="page-subtitle">
+                <a th:href="@{/}" class="breadcrumb">Dashboard</a>
+                <span> › </span>
+                <span th:text="${tituloLista}"></span>
+            </p>
+        </div>
+        <a th:href="@{/tarefas/novo}" class="btn btn--primary">+ Nova Tarefa</a>
+    </div>
+
+    <div th:if="${sucesso}" class="alert alert--success" th:text="${sucesso}"></div>
+
+    <!-- Busca — só na listagem geral -->
+    <form th:if="${filtroAtivo == ''}" th:action="@{/tarefas}" method="get" class="search-bar">
+        <input type="text" name="busca" th:value="${busca}"
+               placeholder="Pesquisar tarefa..." class="search-bar__input"/>
+        <button type="submit" class="btn btn--secondary">🔍 Buscar</button>
+        <a th:href="@{/tarefas}" class="btn btn--ghost">Limpar</a>
+    </form>
+
+    <!-- Indicador de filtro ativo -->
+    <div th:if="${filtroAtivo != ''}" class="filter-bar">
+        <span class="filter-bar__label">🔍 Filtro ativo: <strong th:text="${tituloLista}"></strong></span>
+        <a th:href="@{/tarefas}" class="btn btn--ghost btn--sm">Ver todas</a>
+        <a th:href="@{/}" class="btn btn--ghost btn--sm">← Dashboard</a>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tarefa</th>
+                    <th>Dt. Início</th>
+                    <th>Dt. Término</th>
+                    <th>Importância</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${#lists.isEmpty(tarefas)}">
+                    <td colspan="6" class="table__empty">Nenhuma tarefa encontrada.</td>
+                </tr>
+                <tr th:each="t : ${tarefas}"
+                    th:classappend="${t.importancia.name() == 'URGENTE'} ? ' row--urgente'">
+                    <td>
+                        <span class="badge-urgente" th:if="${t.importancia.name() == 'URGENTE'}">URGENTE</span>
+                        <span th:text="${t.tarefa}" class="tarefa-titulo"></span>
+                        <div th:if="${t.descricao}" th:text="${t.descricao}" class="tarefa-desc"></div>
+                    </td>
+                    <td th:text="${#temporals.format(t.dataInicio,  'dd/MM/yyyy')}"></td>
+                    <td th:text="${#temporals.format(t.dataTermino, 'dd/MM/yyyy')}"></td>
+                    <td>
+                        <span class="badge"
+                              th:classappend="${t.importancia.name() == 'URGENTE'} ? ' badge--urgente' : ' badge--normal'"
+                              th:text="${t.importancia.name()}"></span>
+                    </td>
+                    <td>
+                        <a th:href="@{/tarefas/status/{id}(id=${t.id})}"
+                           class="badge badge--status"
+                           th:classappend="${t.status.name() == 'CONCLUIDA'} ? ' badge--concluida' :
+                                          (${t.status.name() == 'ANDAMENTO'}  ? ' badge--andamento' : ' badge--pendente')"
+                           th:text="${t.status.name()}"
+                           title="Clique para avançar: PENDENTE → ANDAMENTO → CONCLUIDA"></a>
+                    </td>
+                    <td>
+                        <div class="table__actions">
+                            <a th:href="@{/tarefas/editar/{id}(id=${t.id})}"
+                               class="btn btn--sm btn--edit">✏️ Editar</a>
+                            <a th:href="@{/tarefas/excluir/{id}(id=${t.id})}"
+                               class="btn btn--sm btn--danger"
+                               onclick="return confirm('Deseja realmente excluir esta tarefa?')">🗑️ Excluir</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginação -->
+    <div class="pagination">
+        <div class="pagination__info">
+            Página <strong th:text="${paginaAtual + 1}">1</strong> de
+            <strong th:text="${totalPaginas > 0 ? totalPaginas : 1}">1</strong> |
+            Registros: <strong th:text="${totalItens}">0</strong>
+        </div>
+        <div class="pagination__controls">
+            <!-- Paginação com filtro ativo -->
+            <th:block th:if="${filtroAtivo != ''}">
+                <a th:href="@{'/tarefas/filtro/' + ${filtroAtivo}(pagina=0)}"
+                   th:classappend="${paginaAtual == 0} ? ' disabled'"
+                   class="btn btn--sm btn--ghost">&laquo; Primeira</a>
+                <a th:href="@{'/tarefas/filtro/' + ${filtroAtivo}(pagina=${paginaAtual - 1})}"
+                   th:classappend="${paginaAtual == 0} ? ' disabled'"
+                   class="btn btn--sm btn--ghost">&lsaquo; Anterior</a>
+                <a th:href="@{'/tarefas/filtro/' + ${filtroAtivo}(pagina=${paginaAtual + 1})}"
+                   th:classappend="${paginaAtual + 1 >= totalPaginas} ? ' disabled'"
+                   class="btn btn--sm btn--ghost">Próxima &rsaquo;</a>
+                <a th:href="@{'/tarefas/filtro/' + ${filtroAtivo}(pagina=${totalPaginas - 1})}"
+                   th:classappend="${paginaAtual + 1 >= totalPaginas} ? ' disabled'"
+                   class="btn btn--sm btn--ghost">Última &raquo;</a>
+            </th:block>
+            <!-- Paginação listagem geral -->
+            <th:block th:if="${filtroAtivo == ''}">
+                <a th:href="@{/tarefas(busca=${busca},pagina=0)}"
+                   th:classappend="${paginaAtual == 0} ? ' disabled'"
+                   class="btn btn--sm btn--ghost">&laquo; Primeira</a>
+                <a th:href="@{/tarefas(busca=${busca},pagina=${paginaAtual - 1})}"
+                   th:classappend="${paginaAtual == 0} ? ' disabled'"
+                   class="btn btn--sm btn--ghost">&lsaquo; Anterior</a>
+                <a th:href="@{/tarefas(busca=${busca},pagina=${paginaAtual + 1})}"
+                   th:classappend="${paginaAtual + 1 >= totalPaginas} ? ' disabled'"
+                   class="btn btn--sm btn--ghost">Próxima &rsaquo;</a>
+                <a th:href="@{/tarefas(busca=${busca},pagina=${totalPaginas - 1})}"
+                   th:classappend="${paginaAtual + 1 >= totalPaginas} ? ' disabled'"
+                   class="btn btn--sm btn--ghost">Última &raquo;</a>
+            </th:block>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

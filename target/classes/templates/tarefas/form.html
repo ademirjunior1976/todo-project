@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head><title th:text="${tarefaForm.id != null} ? 'Editar Tarefa' : 'Nova Tarefa'">Tarefa</title></head>
+<body>
+<main layout:fragment="content">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title" th:text="${tarefaForm.id != null} ? 'Editar Tarefa' : 'Nova Tarefa'">Tarefa</h1>
+            <p class="page-subtitle">Preencha os dados da tarefa abaixo</p>
+        </div>
+        <a th:href="@{/tarefas}" class="btn btn--ghost">← Voltar</a>
+    </div>
+
+    <div class="form-card">
+        <form th:action="@{/tarefas/salvar}" th:object="${tarefaForm}" method="post" novalidate>
+            <input type="hidden" th:field="*{id}"/>
+            <input type="hidden" th:field="*{dataCriacao}"/>
+
+            <div class="form-group">
+                <label class="form-label" for="tarefa">Tarefa <span class="required">*</span></label>
+                <input type="text" id="tarefa" th:field="*{tarefa}"
+                       class="form-control"
+                       th:classappend="${#fields.hasErrors('tarefa')} ? ' is-invalid'"
+                       placeholder="Título da tarefa"/>
+                <span class="form-error" th:if="${#fields.hasErrors('tarefa')}" th:errors="*{tarefa}"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="descricao">Descrição</label>
+                <textarea id="descricao" th:field="*{descricao}"
+                          class="form-control form-control--textarea"
+                          placeholder="Descrição detalhada da tarefa (opcional)"></textarea>
+                <span class="form-error" th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="dataInicio">Data de Início <span class="required">*</span></label>
+                    <input type="date" id="dataInicio" th:field="*{dataInicio}"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('dataInicio')} ? ' is-invalid'"/>
+                    <span class="form-error" th:if="${#fields.hasErrors('dataInicio')}" th:errors="*{dataInicio}"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="dataTermino">Data de Término <span class="required">*</span></label>
+                    <input type="date" id="dataTermino" th:field="*{dataTermino}"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('dataTermino')} ? ' is-invalid'"/>
+                    <span class="form-error" th:if="${#fields.hasErrors('dataTermino')}" th:errors="*{dataTermino}"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="importancia">Importância</label>
+                    <select id="importancia" th:field="*{importancia}" class="form-control form-control--select">
+                        <option th:each="imp : ${importancias}"
+                                th:value="${imp.name()}"
+                                th:text="${imp.name()}"></option>
+                    </select>
+                    <span class="form-hint">Selecione URGENTE para priorizar na listagem</span>
+                </div>
+                <div class="form-group" th:if="${tarefaForm.id != null}">
+                    <label class="form-label" for="status">Status</label>
+                    <select id="status" th:field="*{status}" class="form-control form-control--select">
+                        <option th:each="st : ${statusList}"
+                                th:value="${st.name()}"
+                                th:text="${st.name()}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn--primary">💾 Salvar Tarefa</button>
+                <a th:href="@{/tarefas}" class="btn btn--ghost">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head><title>Dashboard</title></head>
+<body>
+<main layout:fragment="content">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Clique em um card para ver as tarefas daquele grupo</p>
+        </div>
+        <a th:href="@{/tarefas/novo}" class="btn btn--primary">+ Nova Tarefa</a>
+    </div>
+
+    <div class="cards-grid">
+        <a th:href="@{/tarefas}" class="card card--blue card--link">
+            <div class="card__label">Total de Tarefas</div>
+            <div class="card__value" th:text="${total}">0</div>
+            <div class="card__icon">📋</div>
+            <div class="card__hint">Ver todas →</div>
+        </a>
+        <a th:href="@{/tarefas/filtro/status/PENDENTE}" class="card card--orange card--link">
+            <div class="card__label">Pendentes</div>
+            <div class="card__value" th:text="${pendentes}">0</div>
+            <div class="card__icon">⏳</div>
+            <div class="card__hint">Ver pendentes →</div>
+        </a>
+        <a th:href="@{/tarefas/filtro/status/ANDAMENTO}" class="card card--purple card--link">
+            <div class="card__label">Em Andamento</div>
+            <div class="card__value" th:text="${andamento}">0</div>
+            <div class="card__icon">🔄</div>
+            <div class="card__hint">Ver em andamento →</div>
+        </a>
+        <a th:href="@{/tarefas/filtro/status/CONCLUIDA}" class="card card--green card--link">
+            <div class="card__label">Concluídas</div>
+            <div class="card__value" th:text="${concluidas}">0</div>
+            <div class="card__icon">✅</div>
+            <div class="card__hint">Ver concluídas →</div>
+        </a>
+        <a th:href="@{/tarefas/filtro/importancia/URGENTE}" class="card card--red card--link">
+            <div class="card__label">Urgentes</div>
+            <div class="card__value" th:text="${urgentes}">0</div>
+            <div class="card__icon">🚨</div>
+            <div class="card__hint">Ver urgentes →</div>
+        </a>
+    </div>
+
+    <div class="section-title">Acesso Rápido</div>
+    <div class="quick-actions">
+        <a th:href="@{/tarefas}" class="action-card">
+            <div class="action-card__icon">📋</div>
+            <div class="action-card__title">Consultar Tarefas</div>
+            <div class="action-card__desc">Visualize, filtre, edite e exclua tarefas cadastradas</div>
+        </a>
+        <a th:href="@{/tarefas/novo}" class="action-card action-card--highlight">
+            <div class="action-card__icon">➕</div>
+            <div class="action-card__title">Nova Tarefa</div>
+            <div class="action-card__desc">Cadastre uma nova tarefa com prazo e prioridade</div>
+        </a>
+    </div>
+
+</main>
+</body>
+</html>
