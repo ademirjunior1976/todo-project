@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head><title>Usuários</title></head>
+<body>
+<main layout:fragment="content">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Usuários</h1>
+            <p class="page-subtitle">
+                <a th:href="@{/}" class="breadcrumb">Dashboard</a>
+                <span> › Usuários</span>
+            </p>
+        </div>
+        <a th:href="@{/usuarios/novo}" class="btn btn--primary">+ Novo Usuário</a>
+    </div>
+
+    <div th:if="${sucesso}" class="alert alert--success" th:text="${sucesso}"></div>
+
+    <div class="table-wrapper">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Usuário</th>
+                    <th>Status</th>
+                    <th>Cadastrado em</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${#lists.isEmpty(usuarios)}">
+                    <td colspan="5" class="table__empty">Nenhum usuário cadastrado.</td>
+                </tr>
+                <tr th:each="u : ${usuarios}">
+                    <td>
+                        <span class="tarefa-titulo" th:text="${u.nome}"></span>
+                    </td>
+                    <td th:text="${u.username}"></td>
+                    <td>
+                        <a th:href="@{/usuarios/ativo/{id}(id=${u.id})}"
+                           class="badge badge--status"
+                           th:classappend="${u.ativo} ? ' badge--concluida' : ' badge--urgente'"
+                           th:text="${u.ativo} ? 'ATIVO' : 'INATIVO'"
+                           title="Clique para alternar"></a>
+                    </td>
+                    <td th:text="${#temporals.format(u.dataCriacao, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td>
+                        <div class="table__actions">
+                            <a th:href="@{/usuarios/editar/{id}(id=${u.id})}"
+                               class="btn btn--sm btn--edit">✏️ Editar</a>
+                            <a th:href="@{/usuarios/excluir/{id}(id=${u.id})}"
+                               class="btn btn--sm btn--danger"
+                               onclick="return confirm('Deseja realmente excluir este usuário?')">🗑️ Excluir</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+</body>
+</html>

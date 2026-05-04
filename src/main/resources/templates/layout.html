@@ -19,6 +19,9 @@
     <nav class="topbar__nav">
         <a th:href="@{/}">Dashboard</a>
         <a th:href="@{/tarefas}">Tarefas</a>
+        <a th:href="@{/usuarios}">Usuários</a>
+        <span class="topbar__user" th:text="${session.usuarioLogado}"></span>
+        <a th:href="@{/logout}" class="topbar__logout">Sair</a>
     </nav>
 </header>
 
