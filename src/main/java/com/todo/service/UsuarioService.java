@@ -3,6 +3,7 @@ package com.todo.service;
 import com.todo.model.Usuario;
 import com.todo.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class UsuarioService {
 
     private final UsuarioRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<Usuario> listar() {
         return repository.findAllByOrderByNomeAsc();
@@ -26,9 +28,9 @@ public class UsuarioService {
     @Transactional
     public Usuario salvar(Usuario usuario, String senha) {
         if (usuario.getId() == null) {
-            usuario.setPassword(senha);
+            usuario.setPassword(passwordEncoder.encode(senha));
         } else if (senha != null && !senha.isBlank()) {
-            usuario.setPassword(senha);
+            usuario.setPassword(passwordEncoder.encode(senha));
         } else {
             usuario.setPassword(buscarPorId(usuario.getId()).getPassword());
         }
