@@ -53,19 +53,19 @@
                 </tr>
                 <tr th:each="t : ${tarefas}"
                     th:classappend="${t.importancia.name() == 'URGENTE'} ? ' row--urgente'">
-                    <td>
+                    <td class="td--main">
                         <span class="badge-urgente" th:if="${t.importancia.name() == 'URGENTE'}">URGENTE</span>
                         <span th:text="${t.tarefa}" class="tarefa-titulo"></span>
                         <div th:if="${t.descricao}" th:text="${t.descricao}" class="tarefa-desc"></div>
                     </td>
-                    <td th:text="${#temporals.format(t.dataInicio,  'dd/MM/yyyy')}"></td>
-                    <td th:text="${#temporals.format(t.dataTermino, 'dd/MM/yyyy')}"></td>
-                    <td>
+                    <td data-label="Dt. Início"  th:text="${#temporals.format(t.dataInicio,  'dd/MM/yyyy')}"></td>
+                    <td data-label="Dt. Término" th:text="${#temporals.format(t.dataTermino, 'dd/MM/yyyy')}"></td>
+                    <td data-label="Importância">
                         <span class="badge"
                               th:classappend="${t.importancia.name() == 'URGENTE'} ? ' badge--urgente' : ' badge--normal'"
                               th:text="${t.importancia.name()}"></span>
                     </td>
-                    <td>
+                    <td data-label="Status">
                         <a th:href="@{/tarefas/status/{id}(id=${t.id})}"
                            class="badge badge--status"
                            th:classappend="${t.status.name() == 'CONCLUIDA'} ? ' badge--concluida' :
@@ -73,7 +73,7 @@
                            th:text="${t.status.name()}"
                            title="Clique para avançar: PENDENTE → ANDAMENTO → CONCLUIDA"></a>
                     </td>
-                    <td>
+                    <td data-label="Ações">
                         <div class="table__actions">
                             <a th:href="@{/tarefas/editar/{id}(id=${t.id})}"
                                class="btn btn--sm btn--edit">✏️ Editar</a>

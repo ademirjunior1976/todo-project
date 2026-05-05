@@ -35,19 +35,19 @@
                     <td colspan="5" class="table__empty">Nenhum usuário cadastrado.</td>
                 </tr>
                 <tr th:each="u : ${usuarios}">
-                    <td>
+                    <td class="td--main">
                         <span class="tarefa-titulo" th:text="${u.nome}"></span>
                     </td>
-                    <td th:text="${u.username}"></td>
-                    <td>
+                    <td data-label="Login" th:text="${u.username}"></td>
+                    <td data-label="Status">
                         <a th:href="@{/usuarios/ativo/{id}(id=${u.id})}"
                            class="badge badge--status"
                            th:classappend="${u.ativo} ? ' badge--concluida' : ' badge--urgente'"
                            th:text="${u.ativo} ? 'ATIVO' : 'INATIVO'"
                            title="Clique para alternar"></a>
                     </td>
-                    <td th:text="${#temporals.format(u.dataCriacao, 'dd/MM/yyyy HH:mm')}"></td>
-                    <td>
+                    <td data-label="Cadastro" th:text="${#temporals.format(u.dataCriacao, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td data-label="Ações">
                         <div class="table__actions">
                             <a th:href="@{/usuarios/editar/{id}(id=${u.id})}"
                                class="btn btn--sm btn--edit">✏️ Editar</a>
