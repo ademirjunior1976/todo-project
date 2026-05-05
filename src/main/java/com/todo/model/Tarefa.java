@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import com.todo.model.Usuario;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -49,6 +50,10 @@ public class Tarefa {
     @Column(name = "ds_status", nullable = false, length = 15)
     @Enumerated(EnumType.STRING)
     private Status status = Status.PENDENTE;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cd_usuario")
+    private Usuario usuario;
 
     @Column(name = "dt_criacao", nullable = false, updatable = false)
     private LocalDateTime dataCriacao;

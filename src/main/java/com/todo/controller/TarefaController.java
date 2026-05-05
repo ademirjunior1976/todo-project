@@ -1,10 +1,13 @@
 package com.todo.controller;
 
 import com.todo.model.Tarefa;
+import com.todo.model.Usuario;
+import com.todo.model.UsuarioDetails;
 import com.todo.service.TarefaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,8 +26,8 @@ public class TarefaController {
     // DASHBOARD
     // -------------------------------------------------------
     @GetMapping("/")
-    public String dashboard(Model model) {
-        Map<String, Long> resumo = service.resumoDashboard();
+    public String dashboard(@AuthenticationPrincipal UsuarioDetails principal, Model model) {
+        Map<String, Long> resumo = service.resumoDashboard(principal.getUsuario());
         model.addAttribute("total",     resumo.get("total"));
         model.addAttribute("pendentes", resumo.get("pendentes"));
         model.addAttribute("andamento", resumo.get("andamento"));
@@ -38,10 +41,11 @@ public class TarefaController {
     // -------------------------------------------------------
     @GetMapping("/tarefas")
     public String listar(
+            @AuthenticationPrincipal UsuarioDetails principal,
             @RequestParam(defaultValue = "") String busca,
             @RequestParam(defaultValue = "0") int pagina,
             Model model) {
-        Page<Tarefa> page = service.listar(busca, pagina);
+        Page<Tarefa> page = service.listar(busca, pagina, principal.getUsuario());
         model.addAttribute("tarefas",      page.getContent());
         model.addAttribute("paginaAtual",  page.getNumber());
         model.addAttribute("totalPaginas", page.getTotalPages());
@@ -57,10 +61,11 @@ public class TarefaController {
     // -------------------------------------------------------
     @GetMapping("/tarefas/filtro/status/{status}")
     public String listarPorStatus(
+            @AuthenticationPrincipal UsuarioDetails principal,
             @PathVariable String status,
             @RequestParam(defaultValue = "0") int pagina,
             Model model) {
-        Page<Tarefa> page = service.listarPorStatus(status, pagina);
+        Page<Tarefa> page = service.listarPorStatus(status, pagina, principal.getUsuario());
         String titulo = switch (status.toUpperCase()) {
             case "PENDENTE"  -> "Tarefas Pendentes";
             case "ANDAMENTO" -> "Tarefas em Andamento";
@@ -82,10 +87,11 @@ public class TarefaController {
     // -------------------------------------------------------
     @GetMapping("/tarefas/filtro/importancia/{importancia}")
     public String listarPorImportancia(
+            @AuthenticationPrincipal UsuarioDetails principal,
             @PathVariable String importancia,
             @RequestParam(defaultValue = "0") int pagina,
             Model model) {
-        Page<Tarefa> page = service.listarPorImportancia(importancia, pagina);
+        Page<Tarefa> page = service.listarPorImportancia(importancia, pagina, principal.getUsuario());
         model.addAttribute("tarefas",      page.getContent());
         model.addAttribute("paginaAtual",  page.getNumber());
         model.addAttribute("totalPaginas", page.getTotalPages());
@@ -123,6 +129,7 @@ public class TarefaController {
     // -------------------------------------------------------
     @PostMapping("/tarefas/salvar")
     public String salvar(
+            @AuthenticationPrincipal UsuarioDetails principal,
             @Valid @ModelAttribute("tarefaForm") Tarefa tarefa,
             BindingResult result,
             Model model,
@@ -131,6 +138,9 @@ public class TarefaController {
             model.addAttribute("importancias", Tarefa.Importancia.values());
             model.addAttribute("statusList",   Tarefa.Status.values());
             return "tarefas/form";
+        }
+        if (tarefa.getId() == null) {
+            tarefa.setUsuario(principal.getUsuario());
         }
         service.salvar(tarefa);
         redirect.addFlashAttribute("sucesso", "Tarefa salva com sucesso!");

@@ -15,6 +15,8 @@ public class UsuarioDetails implements UserDetails {
         this.usuario = usuario;
     }
 
+    public Usuario getUsuario() { return usuario; }
+
     public String getNome() {
         return usuario.getNome();
     }
@@ -25,7 +27,8 @@ public class UsuarioDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        String role = usuario.isAdmin() ? "ROLE_ADMIN" : "ROLE_USER";
+        return List.of(new SimpleGrantedAuthority(role));
     }
 
     @Override public boolean isAccountNonExpired()     { return true; }

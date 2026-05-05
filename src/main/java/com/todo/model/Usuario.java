@@ -36,6 +36,9 @@ public class Usuario {
     @Column(name = "fl_ativo", nullable = false)
     private boolean ativo = true;
 
+    @Column(name = "fl_admin", nullable = false)
+    private boolean admin = false;
+
     @Column(name = "dt_criacao", nullable = false, updatable = false)
     private LocalDateTime dataCriacao;
 

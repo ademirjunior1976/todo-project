@@ -22,15 +22,22 @@ public class DataInitializer implements CommandLineRunner {
             admin.setPassword(passwordEncoder.encode("admin"));
             admin.setNome("Administrador");
             admin.setAtivo(true);
+            admin.setAdmin(true);
             repository.save(admin);
             return;
         }
 
         repository.findByUsernameAndAtivoTrue("admin").ifPresent(admin -> {
+            boolean changed = false;
             if (!passwordEncoder.matches("admin", admin.getPassword())) {
                 admin.setPassword(passwordEncoder.encode("admin"));
-                repository.save(admin);
+                changed = true;
             }
+            if (!admin.isAdmin()) {
+                admin.setAdmin(true);
+                changed = true;
+            }
+            if (changed) repository.save(admin);
         });
     }
 }
