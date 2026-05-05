@@ -53,8 +53,19 @@ public class TarefaService {
     }
 
     @Transactional
-    public Tarefa salvar(Tarefa tarefa) {
-        return repository.save(tarefa);
+    public Tarefa salvar(Tarefa tarefaForm) {
+        if (tarefaForm.getId() != null) {
+            Tarefa existing = repository.findById(tarefaForm.getId())
+                    .orElseThrow(() -> new RuntimeException("Tarefa não encontrada: " + tarefaForm.getId()));
+            existing.setTarefa(tarefaForm.getTarefa());
+            existing.setDescricao(tarefaForm.getDescricao());
+            existing.setDataInicio(tarefaForm.getDataInicio());
+            existing.setDataTermino(tarefaForm.getDataTermino());
+            existing.setImportancia(tarefaForm.getImportancia());
+            existing.setStatus(tarefaForm.getStatus());
+            return existing;
+        }
+        return repository.save(tarefaForm);
     }
 
     @Transactional
