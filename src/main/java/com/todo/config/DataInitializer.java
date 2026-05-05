@@ -16,6 +16,16 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        if (repository.count() == 0) {
+            Usuario admin = new Usuario();
+            admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("admin"));
+            admin.setNome("Administrador");
+            admin.setAtivo(true);
+            repository.save(admin);
+            return;
+        }
+
         repository.findByUsernameAndAtivoTrue("admin").ifPresent(admin -> {
             if (!passwordEncoder.matches("admin", admin.getPassword())) {
                 admin.setPassword(passwordEncoder.encode("admin"));
