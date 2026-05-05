@@ -168,9 +168,16 @@ a{text-decoration:none;color:inherit}
 .form-group--float .form-label{position:absolute;top:.68rem;left:.85rem;font-size:.875rem;font-weight:500;color:var(--gray-400);pointer-events:none;transition:top .15s ease,font-size .15s ease,color .15s ease,font-weight .15s ease;background:var(--white);padding:0 .25rem;line-height:1}
 .form-group--float:focus-within .form-label,
 .form-group--float.is-filled .form-label,
-.form-group--float .form-control:not(:placeholder-shown) + .form-label{top:-.52rem;font-size:.7rem;color:var(--blue);font-weight:600}
+.form-group--float .form-control:not(:placeholder-shown) + .form-label,
+.form-group--float:has(.form-control:not(:placeholder-shown)) .form-label{top:-.52rem;font-size:.7rem;color:var(--blue);font-weight:600}
 .form-group--float .form-error,
 .form-group--float .form-hint{display:block;margin-top:.3rem}
+
+/* Password toggle */
+.pwd-wrapper{position:relative}
+.pwd-wrapper .form-control{padding-right:2.75rem;width:100%}
+.pwd-toggle{position:absolute;right:.6rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gray-400);padding:.2rem;display:flex;align-items:center;line-height:1;transition:color .15s}
+.pwd-toggle:hover{color:var(--gray-600)}
 
 /* ALERT */
 .alert{padding:.8rem 1.1rem;border-radius:var(--radius-sm);font-size:.875rem;font-weight:500;margin-bottom:1.25rem}
