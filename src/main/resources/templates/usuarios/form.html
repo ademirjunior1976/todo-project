@@ -48,6 +48,27 @@
 
             <div class="form-row">
                 <div class="form-group form-group--float">
+                    <input type="email" id="email" th:field="*{email}"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('email')} ? ' is-invalid'"
+                           placeholder=" "
+                           autocomplete="off"/>
+                    <label class="form-label" for="email">E-mail</label>
+                    <span class="form-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                </div>
+                <div class="form-group form-group--float">
+                    <input type="tel" id="telefone" th:field="*{telefone}"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('telefone')} ? ' is-invalid'"
+                           placeholder=" "
+                           autocomplete="off"/>
+                    <label class="form-label" for="telefone">Telefone</label>
+                    <span class="form-error" th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group form-group--float">
                     <div class="pwd-wrapper">
                         <input type="password" id="senha" name="senha"
                                class="form-control"

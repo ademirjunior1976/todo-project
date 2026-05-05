@@ -25,20 +25,27 @@
                 <tr>
                     <th>Nome</th>
                     <th>Usuário</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
                     <th>Status</th>
-                    <th>Cadastrado em</th>
                     <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:if="${#lists.isEmpty(usuarios)}">
-                    <td colspan="5" class="table__empty">Nenhum usuário cadastrado.</td>
+                    <td colspan="6" class="table__empty">Nenhum usuário cadastrado.</td>
                 </tr>
                 <tr th:each="u : ${usuarios}">
                     <td class="td--main">
                         <span class="tarefa-titulo" th:text="${u.nome}"></span>
                     </td>
                     <td data-label="Login" th:text="${u.username}"></td>
+                    <td data-label="E-mail">
+                        <a th:if="${u.email}" th:href="'mailto:' + ${u.email}" th:text="${u.email}"
+                           style="color:var(--blue);font-size:.83rem"></a>
+                        <span th:unless="${u.email}" style="color:var(--gray-400);font-size:.8rem">—</span>
+                    </td>
+                    <td data-label="Telefone" th:text="${u.telefone} ?: '—'"></td>
                     <td data-label="Status">
                         <a th:href="@{/usuarios/ativo/{id}(id=${u.id})}"
                            class="badge badge--status"

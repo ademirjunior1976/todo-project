@@ -26,15 +26,20 @@ public class UsuarioService {
     }
 
     @Transactional
-    public Usuario salvar(Usuario usuario, String senha) {
-        if (usuario.getId() == null) {
-            usuario.setPassword(passwordEncoder.encode(senha));
-        } else if (senha != null && !senha.isBlank()) {
-            usuario.setPassword(passwordEncoder.encode(senha));
-        } else {
-            usuario.setPassword(buscarPorId(usuario.getId()).getPassword());
+    public Usuario salvar(Usuario usuarioForm, String senha) {
+        if (usuarioForm.getId() == null) {
+            usuarioForm.setPassword(passwordEncoder.encode(senha));
+            return repository.save(usuarioForm);
         }
-        return repository.save(usuario);
+        Usuario existing = buscarPorId(usuarioForm.getId());
+        existing.setNome(usuarioForm.getNome());
+        existing.setTelefone(usuarioForm.getTelefone());
+        existing.setEmail(usuarioForm.getEmail());
+        existing.setAtivo(usuarioForm.isAtivo());
+        if (senha != null && !senha.isBlank()) {
+            existing.setPassword(passwordEncoder.encode(senha));
+        }
+        return existing;
     }
 
     @Transactional

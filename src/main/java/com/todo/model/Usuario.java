@@ -1,6 +1,7 @@
 package com.todo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -32,6 +33,15 @@ public class Usuario {
     @Size(max = 100, message = "Nome deve ter no máximo 100 caracteres")
     @Column(name = "ds_nome", nullable = false, length = 100)
     private String nome;
+
+    @Size(max = 20, message = "Telefone deve ter no máximo 20 caracteres")
+    @Column(name = "ds_telefone", length = 20)
+    private String telefone;
+
+    @Email(message = "E-mail inválido")
+    @Size(max = 100, message = "E-mail deve ter no máximo 100 caracteres")
+    @Column(name = "ds_email", length = 100)
+    private String email;
 
     @Column(name = "fl_ativo", nullable = false)
     private boolean ativo = true;
