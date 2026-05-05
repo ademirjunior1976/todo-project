@@ -24,38 +24,35 @@
             <input type="hidden" th:field="*{dataCriacao}"/>
 
             <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="nome">Nome completo <span class="required">*</span></label>
+                <div class="form-group form-group--float">
                     <input type="text" id="nome" th:field="*{nome}"
                            class="form-control"
                            th:classappend="${#fields.hasErrors('nome')} ? ' is-invalid'"
-                           placeholder="Nome do usuário"/>
+                           placeholder=" "/>
+                    <label class="form-label" for="nome">Nome completo <span class="required">*</span></label>
                     <span class="form-error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
                 </div>
-                <div class="form-group">
-                    <label class="form-label" for="username">
-                        Login <span class="required">*</span>
-                    </label>
+                <div class="form-group form-group--float">
                     <input type="text" id="username" th:field="*{username}"
                            class="form-control"
                            th:classappend="${#fields.hasErrors('username')} ? ' is-invalid'"
                            th:readonly="${usuarioForm.id != null}"
-                           placeholder="Nome de usuário para login"/>
+                           placeholder=" "/>
+                    <label class="form-label" for="username">Login <span class="required">*</span></label>
                     <span class="form-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
                     <span class="form-hint" th:if="${usuarioForm.id != null}">O login não pode ser alterado</span>
                 </div>
             </div>
 
             <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="senha">
-                        Senha
-                        <span class="required" th:if="${usuarioForm.id == null}">*</span>
-                    </label>
+                <div class="form-group form-group--float">
                     <input type="password" id="senha" name="senha"
                            class="form-control"
                            th:classappend="${#fields.hasErrors('password')} ? ' is-invalid'"
-                           placeholder="Digite a senha"/>
+                           placeholder=" "/>
+                    <label class="form-label" for="senha">
+                        Senha <span class="required" th:if="${usuarioForm.id == null}">*</span>
+                    </label>
                     <span class="form-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
                     <span class="form-hint" th:if="${usuarioForm.id != null}">Deixe em branco para manter a senha atual</span>
                 </div>

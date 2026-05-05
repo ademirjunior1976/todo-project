@@ -163,6 +163,15 @@ a{text-decoration:none;color:inherit}
 .form-hint{font-size:.78rem;color:var(--gray-400);font-style:italic}
 .form-actions{display:flex;gap:.75rem;margin-top:1.75rem;padding-top:1.25rem;border-top:1px solid var(--gray-100)}
 
+/* Floating labels */
+.form-group--float{position:relative;display:block;margin-bottom:1.5rem}
+.form-group--float .form-label{position:absolute;top:.68rem;left:.85rem;font-size:.875rem;font-weight:500;color:var(--gray-400);pointer-events:none;transition:top .15s ease,font-size .15s ease,color .15s ease,font-weight .15s ease;background:var(--white);padding:0 .25rem;line-height:1}
+.form-group--float:focus-within .form-label,
+.form-group--float.is-filled .form-label,
+.form-group--float .form-control:not(:placeholder-shown) + .form-label{top:-.52rem;font-size:.7rem;color:var(--blue);font-weight:600}
+.form-group--float .form-error,
+.form-group--float .form-hint{display:block;margin-top:.3rem}
+
 /* ALERT */
 .alert{padding:.8rem 1.1rem;border-radius:var(--radius-sm);font-size:.875rem;font-weight:500;margin-bottom:1.25rem}
 .alert--success{background:var(--green-light);color:var(--green);border-left:4px solid var(--green)}

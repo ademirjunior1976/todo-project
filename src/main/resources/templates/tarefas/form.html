@@ -19,12 +19,12 @@
             <input type="hidden" th:field="*{id}"/>
             <input type="hidden" th:field="*{dataCriacao}"/>
 
-            <div class="form-group">
-                <label class="form-label" for="tarefa">Tarefa <span class="required">*</span></label>
+            <div class="form-group form-group--float">
                 <input type="text" id="tarefa" th:field="*{tarefa}"
                        class="form-control"
                        th:classappend="${#fields.hasErrors('tarefa')} ? ' is-invalid'"
-                       placeholder="Título da tarefa"/>
+                       placeholder=" "/>
+                <label class="form-label" for="tarefa">Tarefa <span class="required">*</span></label>
                 <span class="form-error" th:if="${#fields.hasErrors('tarefa')}" th:errors="*{tarefa}"></span>
             </div>
 
@@ -32,44 +32,44 @@
                 <label class="form-label" for="descricao">Descrição</label>
                 <textarea id="descricao" th:field="*{descricao}"
                           class="form-control form-control--textarea"
-                          placeholder="Descrição detalhada da tarefa (opcional)"></textarea>
+                          placeholder="Descrição detalhada (opcional)"></textarea>
                 <span class="form-error" th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"></span>
             </div>
 
             <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="dataInicio">Data de Início <span class="required">*</span></label>
+                <div class="form-group form-group--float">
                     <input type="date" id="dataInicio" th:field="*{dataInicio}"
                            class="form-control"
                            th:classappend="${#fields.hasErrors('dataInicio')} ? ' is-invalid'"/>
+                    <label class="form-label" for="dataInicio">Data de Início <span class="required">*</span></label>
                     <span class="form-error" th:if="${#fields.hasErrors('dataInicio')}" th:errors="*{dataInicio}"></span>
                 </div>
-                <div class="form-group">
-                    <label class="form-label" for="dataTermino">Data de Término <span class="required">*</span></label>
+                <div class="form-group form-group--float">
                     <input type="date" id="dataTermino" th:field="*{dataTermino}"
                            class="form-control"
                            th:classappend="${#fields.hasErrors('dataTermino')} ? ' is-invalid'"/>
+                    <label class="form-label" for="dataTermino">Data de Término <span class="required">*</span></label>
                     <span class="form-error" th:if="${#fields.hasErrors('dataTermino')}" th:errors="*{dataTermino}"></span>
                 </div>
             </div>
 
             <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label" for="importancia">Importância</label>
+                <div class="form-group form-group--float">
                     <select id="importancia" th:field="*{importancia}" class="form-control form-control--select">
                         <option th:each="imp : ${importancias}"
                                 th:value="${imp.name()}"
                                 th:text="${imp.name()}"></option>
                     </select>
-                    <span class="form-hint">Selecione URGENTE para priorizar na listagem</span>
+                    <label class="form-label" for="importancia">Importância</label>
+                    <span class="form-hint">URGENTE aparece no topo da lista</span>
                 </div>
-                <div class="form-group" th:if="${tarefaForm.id != null}">
-                    <label class="form-label" for="status">Status</label>
+                <div class="form-group form-group--float" th:if="${tarefaForm.id != null}">
                     <select id="status" th:field="*{status}" class="form-control form-control--select">
                         <option th:each="st : ${statusList}"
                                 th:value="${st.name()}"
                                 th:text="${st.name()}"></option>
                     </select>
+                    <label class="form-label" for="status">Status</label>
                 </div>
             </div>
 
