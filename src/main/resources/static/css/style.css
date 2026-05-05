@@ -167,11 +167,56 @@ a{text-decoration:none;color:inherit}
 .alert{padding:.8rem 1.1rem;border-radius:var(--radius-sm);font-size:.875rem;font-weight:500;margin-bottom:1.25rem}
 .alert--success{background:var(--green-light);color:var(--green);border-left:4px solid var(--green)}
 
-/* RESPONSIVE */
+/* RESPONSIVE — tablet */
+@media(max-width:768px){
+    .topbar{height:auto;padding:.65rem 1rem;flex-wrap:wrap;gap:.35rem}
+    .topbar__nav{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:.15rem;scrollbar-width:none}
+    .topbar__nav::-webkit-scrollbar{display:none}
+    .topbar__nav a,.topbar__user,.topbar__logout{white-space:nowrap}
+    .pagination{flex-direction:column;align-items:flex-start;gap:.5rem}
+    .pagination__controls{flex-wrap:wrap}
+}
+
+/* RESPONSIVE — mobile */
 @media(max-width:640px){
     .main-content{padding:1.25rem 1rem}
-    .page-header{flex-direction:column}
-    .form-row{grid-template-columns:1fr}
+
+    /* Header */
+    .page-header{flex-direction:column;gap:.75rem}
+    .page-header>.btn{align-self:flex-start}
+
+    /* Cards */
     .cards-grid{grid-template-columns:1fr 1fr}
+    .card{padding:1.25rem 1rem 1rem}
+    .card__value{font-size:2rem}
+    .quick-actions{grid-template-columns:1fr}
+
+    /* Search */
+    .search-bar{flex-wrap:wrap}
+    .search-bar__input{max-width:100%;flex:none;width:100%}
+
+    /* Filter */
     .filter-bar{flex-direction:column;align-items:flex-start}
+
+    /* Table */
+    .table{font-size:.8rem}
+    .table th,.table td{padding:.6rem .7rem}
+    .table td:last-child{width:auto}
+    .table__actions{flex-direction:column;gap:.25rem;align-items:stretch}
+    .table__actions .btn{justify-content:center}
+
+    /* Form */
+    .form-row{grid-template-columns:1fr}
+    .form-card{padding:1.25rem}
+    .form-actions{flex-direction:column}
+    .form-actions .btn{width:100%;justify-content:center}
+
+    /* Buttons */
+    .btn--sm{padding:.3rem .6rem;font-size:.75rem}
+}
+
+/* RESPONSIVE — small phones */
+@media(max-width:400px){
+    .cards-grid{grid-template-columns:1fr}
+    .topbar__user{display:none}
 }
