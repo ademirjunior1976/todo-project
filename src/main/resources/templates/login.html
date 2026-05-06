@@ -84,6 +84,7 @@
         <div th:if="${param.logout}" class="alert alert--success">
             Você saiu com sucesso.
         </div>
+        <div th:if="${sucesso}" class="alert alert--success" th:text="${sucesso}"></div>
 
         <form th:action="@{/login}" method="post">
             <div class="form-group form-group--float">
