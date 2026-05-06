@@ -1,0 +1,1 @@
+ALTER TABLE tb_usuario ALTER COLUMN ds_telefone TYPE VARCHAR(30);

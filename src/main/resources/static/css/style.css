@@ -154,7 +154,7 @@ a{text-decoration:none;color:inherit}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .form-label{font-size:.82rem;font-weight:600;color:var(--gray-600)}
 .required{color:var(--red)}
-.form-control{padding:.6rem .9rem;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-family:var(--font);font-size:.875rem;color:var(--gray-800);background:var(--white);transition:border-color .15s,box-shadow .15s}
+.form-control{padding:.6rem .9rem;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-family:var(--font);font-size:.875rem;color:var(--gray-800);background:var(--white);transition:border-color .15s,box-shadow .15s;width:100%}
 .form-control:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,102,204,.12)}
 .form-control.is-invalid{border-color:var(--red)}
 .form-control--textarea{resize:vertical;min-height:110px}
@@ -172,6 +172,11 @@ a{text-decoration:none;color:inherit}
 .form-group--float:has(.form-control:not(:placeholder-shown)) .form-label{top:-.52rem;font-size:.7rem;color:var(--blue);font-weight:600}
 .form-group--float .form-error,
 .form-group--float .form-hint{display:block;margin-top:.3rem}
+
+/* Phone field */
+.phone-wrapper{display:flex;gap:.4rem}
+.ddi-select{width:150px;flex-shrink:0;font-size:.82rem}
+.phone-local{flex:1;min-width:0}
 
 /* Password toggle */
 .pwd-wrapper{position:relative}
