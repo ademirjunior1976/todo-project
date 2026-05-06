@@ -34,14 +34,20 @@ public class Usuario {
     @Column(name = "ds_nome", nullable = false, length = 100)
     private String nome;
 
-    @Size(max = 20, message = "Telefone deve ter no máximo 20 caracteres")
-    @Column(name = "ds_telefone", length = 20)
+    @Size(max = 30, message = "Telefone deve ter no máximo 30 caracteres")
+    @Column(name = "ds_telefone", length = 30)
     private String telefone;
 
     @Email(message = "E-mail inválido")
     @Size(max = 100, message = "E-mail deve ter no máximo 100 caracteres")
     @Column(name = "ds_email", length = 100)
     private String email;
+
+    @Column(name = "ds_token_reset", length = 100)
+    private String tokenReset;
+
+    @Column(name = "dt_token_expiracao")
+    private LocalDateTime tokenExpiracao;
 
     @Column(name = "fl_ativo", nullable = false)
     private boolean ativo = true;

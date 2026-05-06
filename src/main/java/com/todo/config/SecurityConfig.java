@@ -22,6 +22,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/css/**", "/js/**").permitAll()
+                .requestMatchers("/recuperar-senha", "/recuperar-senha/redefinir").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
