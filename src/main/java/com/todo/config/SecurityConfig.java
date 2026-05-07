@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -21,8 +22,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/css/**", "/js/**").permitAll()
-                .requestMatchers("/recuperar-senha", "/recuperar-senha/redefinir").permitAll()
+                .requestMatchers(
+                    AntPathRequestMatcher.antMatcher("/css/**"),
+                    AntPathRequestMatcher.antMatcher("/js/**"),
+                    AntPathRequestMatcher.antMatcher("/recuperar-senha"),
+                    AntPathRequestMatcher.antMatcher("/recuperar-senha/**"),
+                    AntPathRequestMatcher.antMatcher("/error")
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

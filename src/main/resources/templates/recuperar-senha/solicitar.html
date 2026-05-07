@@ -44,7 +44,7 @@
         </div>
 
         <!-- Estado: formulário -->
-        <div th:if="${!enviado}">
+        <div th:unless="${enviado}">
             <p class="login-card__subtitle">
                 Informe seu login ou e-mail cadastrado.<br/>
                 Enviaremos um link para redefinir sua senha.
