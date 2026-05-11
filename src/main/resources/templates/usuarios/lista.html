@@ -28,12 +28,13 @@
                     <th>E-mail</th>
                     <th>Telefone</th>
                     <th>Status</th>
+                    <th>Cadastro</th>
                     <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:if="${#lists.isEmpty(usuarios)}">
-                    <td colspan="6" class="table__empty">Nenhum usuário cadastrado.</td>
+                    <td colspan="7" class="table__empty">Nenhum usuário cadastrado.</td>
                 </tr>
                 <tr th:each="u : ${usuarios}">
                     <td class="td--main">

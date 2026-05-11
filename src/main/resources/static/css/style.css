@@ -33,6 +33,7 @@ a{text-decoration:none;color:inherit}
 .topbar{background:var(--blue);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,102,204,.25);position:sticky;top:0;z-index:100}
 .topbar__brand{display:flex;align-items:center;gap:.5rem;color:var(--white);font-weight:700;font-size:1.1rem}
 .topbar__icon{background:rgba(255,255,255,.2);border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:.85rem}
+.topbar__logo{width:32px;height:32px;object-fit:contain;border-radius:6px;background:rgba(255,255,255,.92);padding:3px}
 .topbar__nav{display:flex;gap:.25rem}
 .topbar__nav a{color:rgba(255,255,255,.8);font-size:.875rem;font-weight:500;padding:.4rem .9rem;border-radius:var(--radius-sm);transition:background .15s,color .15s}
 .topbar__nav a:hover{background:rgba(255,255,255,.18);color:var(--white)}
@@ -228,14 +229,14 @@ a{text-decoration:none;color:inherit}
     .table{min-width:0}
     .table tbody tr{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-sm);margin-bottom:.75rem;padding:.6rem .9rem;border-left:3px solid var(--gray-200)}
     .table tbody .row--urgente{border-left-color:var(--red)}
-    .table td{display:flex;align-items:center;gap:.5rem;padding:.35rem 0;border-bottom:1px solid var(--gray-100);width:100%;font-size:.875rem}
+    .table td{display:grid;grid-template-columns:5.5rem 1fr;align-items:center;gap:.5rem;padding:.35rem 0;border-bottom:1px solid var(--gray-100);width:100%;font-size:.875rem}
     .table td:last-child{border-bottom:none}
-    .table td::before{content:attr(data-label);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-400);min-width:5.5rem;flex-shrink:0}
+    .table td::before{content:attr(data-label);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-400)}
     /* Célula principal (título) — ocupa linha inteira sem label */
     .table .td--main{display:block;padding:.4rem 0 .5rem;border-bottom:1px solid var(--gray-100)}
     .table .td--main::before{display:none}
     /* Coluna de ações — botões centralizados sem label */
-    .table td[data-label="Ações"]{justify-content:center;padding-top:.5rem}
+    .table td[data-label="Ações"]{grid-template-columns:1fr;justify-items:center;padding-top:.5rem}
     .table td[data-label="Ações"]::before{display:none}
     /* Linha vazia */
     .table__empty{display:block;text-align:center;padding:1.5rem 0 !important}
