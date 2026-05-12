@@ -224,26 +224,28 @@ a{text-decoration:none;color:inherit}
 
     /* Table → Cards no mobile */
     .table-wrapper{background:transparent;box-shadow:none;overflow-x:visible;margin-bottom:.75rem}
-    .table,.table tbody,.table tr{display:block}
+    .table,.table tbody{display:block}
     .table thead{display:none}
     .table{min-width:0}
-    .table tbody tr{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-sm);margin-bottom:.75rem;padding:.6rem .9rem;border-left:3px solid var(--gray-200)}
+    .table tbody tr{display:grid;grid-template-columns:1fr 1fr;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-sm);margin-bottom:.75rem;padding:.6rem .9rem;border-left:3px solid var(--gray-200)}
     .table tbody .row--urgente{border-left-color:var(--red)}
-    .table td{display:grid;grid-template-columns:5.5rem 1fr;align-items:center;gap:.5rem;padding:.35rem 0;border-bottom:1px solid var(--gray-100);width:100%;font-size:.875rem}
+    .table td{display:flex;flex-direction:column;align-items:flex-start;gap:.15rem;padding:.35rem .3rem;border-bottom:1px solid var(--gray-100);font-size:.875rem}
     .table td:last-child{border-bottom:none}
     .table td::before{content:attr(data-label);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-400)}
-    /* Célula principal (título) — ocupa linha inteira sem label */
-    .table .td--main{display:block;padding:.4rem 0 .5rem;border-bottom:1px solid var(--gray-100)}
+    /* Célula principal (título) — linha inteira sem label */
+    .table .td--main{display:block;grid-column:1/-1;padding:.4rem 0 .5rem;border-bottom:1px solid var(--gray-100)}
     .table .td--main::before{display:none}
-    /* Coluna de ações — botões centralizados sem label */
-    .table td[data-label="Ações"]{grid-template-columns:1fr;justify-items:center;padding-top:.5rem}
+    /* Coluna de ações — linha inteira, botões centralizados */
+    .table td[data-label="Ações"]{grid-column:1/-1;flex-direction:row;justify-content:center;padding-top:.5rem}
     .table td[data-label="Ações"]::before{display:none}
+    /* Ocultar coluna Cadastro no mobile */
+    .table td[data-label="Cadastro"]{display:none}
     /* Linha vazia */
-    .table__empty{display:block;text-align:center;padding:1.5rem 0 !important}
+    .table__empty{display:block;grid-column:1/-1;text-align:center;padding:1.5rem 0 !important}
     .table__empty::before{display:none}
     /* Botões de ação lado a lado */
-    .table__actions{flex-direction:row;flex-wrap:wrap;gap:.5rem}
-    .table__actions .btn{flex:1;justify-content:center}
+    .table__actions{display:flex;flex-direction:row;flex-wrap:nowrap;gap:.5rem;width:100%}
+    .table__actions .btn{flex:1;justify-content:center;min-width:0}
 
     /* Form */
     .form-row{grid-template-columns:1fr}
