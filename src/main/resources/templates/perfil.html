@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head><title>Meu Perfil</title></head>
+<body>
+<main layout:fragment="content">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Meu Perfil</h1>
+            <p class="page-subtitle">
+                <a th:href="@{/}" class="breadcrumb">Dashboard</a>
+                <span> › Meu Perfil</span>
+            </p>
+        </div>
+    </div>
+
+    <div th:if="${sucesso}" class="alert alert--success" th:text="${sucesso}"></div>
+    <div th:if="${erro}" class="alert" style="background:var(--red-light);color:var(--red);border-left:4px solid var(--red);padding:.8rem 1.1rem;border-radius:var(--radius-sm);font-size:.875rem;font-weight:500;margin-bottom:1.25rem;" th:text="${erro}"></div>
+
+    <div class="form-card">
+        <form th:action="@{/perfil}" method="post" novalidate autocomplete="off">
+
+            <div class="form-row">
+                <div class="form-group form-group--float">
+                    <input type="text" id="nome" name="nome"
+                           class="form-control"
+                           th:value="${usuario.nome}"
+                           placeholder=" " autocomplete="off" required/>
+                    <label class="form-label" for="nome">Nome completo <span class="required">*</span></label>
+                </div>
+                <div class="form-group form-group--float">
+                    <input type="text" id="username"
+                           class="form-control"
+                           th:value="${usuario.username}"
+                           placeholder=" " readonly/>
+                    <label class="form-label" for="username">Login</label>
+                    <span class="form-hint">O login não pode ser alterado</span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group form-group--float">
+                    <input type="email" id="email" name="email"
+                           class="form-control"
+                           th:value="${usuario.email}"
+                           placeholder=" " autocomplete="off"/>
+                    <label class="form-label" for="email">E-mail</label>
+                </div>
+                <div class="form-group--float is-filled">
+                    <div class="phone-wrapper">
+                        <select id="ddiSelect" class="form-control form-control--select ddi-select">
+                            <optgroup label="América do Sul">
+                                <option value="+55" data-mask="(##) #####-####">Brasil (+55)</option>
+                                <option value="+54" data-mask="(##) ####-####">Argentina (+54)</option>
+                                <option value="+591" data-mask="# ###-####">Bolívia (+591)</option>
+                                <option value="+56" data-mask="# ####-####">Chile (+56)</option>
+                                <option value="+57" data-mask="### ###-####">Colômbia (+57)</option>
+                                <option value="+593" data-mask="## ###-####">Equador (+593)</option>
+                                <option value="+592" data-mask="###-####">Guiana (+592)</option>
+                                <option value="+595" data-mask="## ###-####">Paraguai (+595)</option>
+                                <option value="+51" data-mask="### ###-###">Peru (+51)</option>
+                                <option value="+598" data-mask="## ###-####">Uruguai (+598)</option>
+                                <option value="+58" data-mask="###-###-####">Venezuela (+58)</option>
+                            </optgroup>
+                            <optgroup label="América do Norte e Central">
+                                <option value="+1" data-mask="(###) ###-####">Estados Unidos (+1)</option>
+                                <option value="+1" data-mask="(###) ###-####">Canadá (+1)</option>
+                                <option value="+53" data-mask="# ###-####">Cuba (+53)</option>
+                                <option value="+52" data-mask="## ####-####">México (+52)</option>
+                            </optgroup>
+                            <optgroup label="Europa">
+                                <option value="+49" data-mask="### ########">Alemanha (+49)</option>
+                                <option value="+43" data-mask="### ######">Áustria (+43)</option>
+                                <option value="+32" data-mask="### ## ## ##">Bélgica (+32)</option>
+                                <option value="+45" data-mask="## ## ## ##">Dinamarca (+45)</option>
+                                <option value="+34" data-mask="### ### ###">Espanha (+34)</option>
+                                <option value="+358" data-mask="## ### ####">Finlândia (+358)</option>
+                                <option value="+33" data-mask="# ## ## ## ##">França (+33)</option>
+                                <option value="+30" data-mask="### ### ####">Grécia (+30)</option>
+                                <option value="+31" data-mask="# #### ####">Holanda (+31)</option>
+                                <option value="+39" data-mask="### ### ####">Itália (+39)</option>
+                                <option value="+47" data-mask="### ## ###">Noruega (+47)</option>
+                                <option value="+48" data-mask="### ### ###">Polônia (+48)</option>
+                                <option value="+351" data-mask="### ### ###">Portugal (+351)</option>
+                                <option value="+44" data-mask="#### ######">Reino Unido (+44)</option>
+                                <option value="+7" data-mask="(###) ###-##-##">Rússia (+7)</option>
+                                <option value="+46" data-mask="##-### ## ##">Suécia (+46)</option>
+                                <option value="+41" data-mask="## ### ## ##">Suíça (+41)</option>
+                                <option value="+90" data-mask="(###) ### ####">Turquia (+90)</option>
+                            </optgroup>
+                            <optgroup label="Ásia e Oriente Médio">
+                                <option value="+966" data-mask="## ###-####">Arábia Saudita (+966)</option>
+                                <option value="+86" data-mask="### #### ####">China (+86)</option>
+                                <option value="+82" data-mask="##-####-####">Coreia do Sul (+82)</option>
+                                <option value="+971" data-mask="##-###-####">Emirados Árabes (+971)</option>
+                                <option value="+63" data-mask="### ###-####">Filipinas (+63)</option>
+                                <option value="+91" data-mask="#####-#####">Índia (+91)</option>
+                                <option value="+62" data-mask="###-####-####">Indonésia (+62)</option>
+                                <option value="+972" data-mask="##-###-####">Israel (+972)</option>
+                                <option value="+81" data-mask="##-####-####">Japão (+81)</option>
+                                <option value="+60" data-mask="##-####-####">Malásia (+60)</option>
+                                <option value="+92" data-mask="### ###-####">Paquistão (+92)</option>
+                                <option value="+65" data-mask="####-####">Singapura (+65)</option>
+                                <option value="+66" data-mask="##-####-####">Tailândia (+66)</option>
+                            </optgroup>
+                            <optgroup label="África e Oceania">
+                                <option value="+27" data-mask="##-###-####">África do Sul (+27)</option>
+                                <option value="+61" data-mask="## #### ####">Austrália (+61)</option>
+                                <option value="+20" data-mask="### ### ####">Egito (+20)</option>
+                                <option value="+212" data-mask="##-####-####">Marrocos (+212)</option>
+                                <option value="+234" data-mask="###-###-####">Nigéria (+234)</option>
+                                <option value="+64" data-mask="##-###-####">Nova Zelândia (+64)</option>
+                            </optgroup>
+                        </select>
+                        <input type="tel" id="telefoneLocal" class="form-control phone-local"
+                               placeholder="(11) 94581-6565" autocomplete="off"/>
+                    </div>
+                    <label class="form-label" for="ddiSelect">Telefone</label>
+                    <input type="hidden" name="telefone" th:value="${usuario.telefone}"/>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group form-group--float">
+                    <div class="pwd-wrapper">
+                        <input type="password" id="senha" name="senha"
+                               class="form-control"
+                               placeholder=" " autocomplete="new-password"/>
+                        <button type="button" class="pwd-toggle" aria-label="Mostrar senha">
+                            <svg class="icon-eye" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg class="icon-eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        </button>
+                    </div>
+                    <label class="form-label" for="senha">Nova senha</label>
+                    <span class="form-hint">Deixe em branco para manter a senha atual</span>
+                </div>
+                <div class="form-group form-group--float">
+                    <div class="pwd-wrapper">
+                        <input type="password" id="confirmarSenha" name="confirmarSenha"
+                               class="form-control"
+                               placeholder=" " autocomplete="new-password"/>
+                        <button type="button" class="pwd-toggle" aria-label="Mostrar senha">
+                            <svg class="icon-eye" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg class="icon-eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        </button>
+                    </div>
+                    <label class="form-label" for="confirmarSenha">Confirmar nova senha</label>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn--primary">💾 Salvar</button>
+                <a th:href="@{/}" class="btn btn--ghost">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+<script>
+(function () {
+    var ddiSelect     = document.getElementById('ddiSelect');
+    var telefoneLocal = document.getElementById('telefoneLocal');
+    var hiddenField   = document.querySelector('input[name="telefone"][type="hidden"]');
+    if (!ddiSelect || !telefoneLocal || !hiddenField) return;
+
+    function getMask() {
+        return ddiSelect.options[ddiSelect.selectedIndex].dataset.mask || '###########';
+    }
+
+    function applyMask(value, mask) {
+        var digits = value.replace(/\D/g, '');
+        var result = '';
+        var di = 0;
+        for (var i = 0; i < mask.length; i++) {
+            if (di >= digits.length) break;
+            result += mask[i] === '#' ? digits[di++] : mask[i];
+        }
+        return result;
+    }
+
+    function updateHidden() {
+        var local = telefoneLocal.value.replace(/\D/g, '');
+        hiddenField.value = local ? ddiSelect.value + ' ' + telefoneLocal.value : '';
+    }
+
+    function updatePlaceholder() {
+        telefoneLocal.placeholder = getMask().replace(/#/g, '0');
+    }
+
+    var stored = hiddenField.value;
+    if (stored) {
+        for (var i = 0; i < ddiSelect.options.length; i++) {
+            var opt = ddiSelect.options[i];
+            if (stored.startsWith(opt.value + ' ')) {
+                ddiSelect.value = opt.value;
+                var localPart = stored.slice(opt.value.length + 1);
+                telefoneLocal.value = applyMask(localPart, opt.dataset.mask || '###########');
+                break;
+            }
+        }
+    }
+
+    updatePlaceholder();
+
+    ddiSelect.addEventListener('change', function () {
+        var digits = telefoneLocal.value.replace(/\D/g, '');
+        telefoneLocal.value = applyMask(digits, getMask());
+        updatePlaceholder();
+        updateHidden();
+    });
+
+    telefoneLocal.addEventListener('input', function () {
+        var cursor = this.selectionStart;
+        var oldLen = this.value.length;
+        this.value = applyMask(this.value, getMask());
+        var diff = this.value.length - oldLen;
+        this.setSelectionRange(cursor + diff, cursor + diff);
+        updateHidden();
+    });
+}());
+</script>
+
+</main>
+</body>
+</html>

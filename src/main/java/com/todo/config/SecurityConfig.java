@@ -27,8 +27,13 @@ public class SecurityConfig {
                     AntPathRequestMatcher.antMatcher("/js/**"),
                     AntPathRequestMatcher.antMatcher("/recuperar-senha"),
                     AntPathRequestMatcher.antMatcher("/recuperar-senha/**"),
+                    AntPathRequestMatcher.antMatcher("/cadastro"),
                     AntPathRequestMatcher.antMatcher("/error")
                 ).permitAll()
+                .requestMatchers(
+                    AntPathRequestMatcher.antMatcher("/usuarios"),
+                    AntPathRequestMatcher.antMatcher("/usuarios/**")
+                ).hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
