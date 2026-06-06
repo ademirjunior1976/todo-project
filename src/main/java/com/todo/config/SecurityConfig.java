@@ -25,6 +25,8 @@ public class SecurityConfig {
                 .requestMatchers(
                     AntPathRequestMatcher.antMatcher("/css/**"),
                     AntPathRequestMatcher.antMatcher("/js/**"),
+                    AntPathRequestMatcher.antMatcher("/*.png"),
+                    AntPathRequestMatcher.antMatcher("/*.ico"),
                     AntPathRequestMatcher.antMatcher("/recuperar-senha"),
                     AntPathRequestMatcher.antMatcher("/recuperar-senha/**"),
                     AntPathRequestMatcher.antMatcher("/cadastro"),
@@ -44,6 +46,9 @@ public class SecurityConfig {
             .logout(logout -> logout
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
+            )
+            .sessionManagement(session -> session
+                .sessionFixation().changeSessionId()
             );
         return http.build();
     }
