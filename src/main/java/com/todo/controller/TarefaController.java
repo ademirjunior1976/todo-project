@@ -3,10 +3,15 @@ package com.todo.controller;
 import com.todo.model.Tarefa;
 import com.todo.model.Usuario;
 import com.todo.model.UsuarioDetails;
+import com.todo.service.RelatorioService;
 import com.todo.service.TarefaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +19,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -21,6 +28,7 @@ import java.util.Map;
 public class TarefaController {
 
     private final TarefaService service;
+    private final RelatorioService relatorioService;
 
     // -------------------------------------------------------
     // DASHBOARD
@@ -53,6 +61,7 @@ public class TarefaController {
         model.addAttribute("busca",        busca);
         model.addAttribute("tituloLista",  "Gestão de Tarefas");
         model.addAttribute("filtroAtivo",  "");
+        model.addAttribute("isAdmin",      principal.getUsuario().isAdmin());
         return "tarefas/lista";
     }
 
@@ -79,6 +88,7 @@ public class TarefaController {
         model.addAttribute("busca",        "");
         model.addAttribute("tituloLista",  titulo);
         model.addAttribute("filtroAtivo",  "status/" + status);
+        model.addAttribute("isAdmin",      principal.getUsuario().isAdmin());
         return "tarefas/lista";
     }
 
@@ -99,6 +109,7 @@ public class TarefaController {
         model.addAttribute("busca",        "");
         model.addAttribute("tituloLista",  "Tarefas Urgentes");
         model.addAttribute("filtroAtivo",  "importancia/" + importancia);
+        model.addAttribute("isAdmin",      principal.getUsuario().isAdmin());
         return "tarefas/lista";
     }
 
@@ -155,6 +166,36 @@ public class TarefaController {
         service.excluir(id);
         redirect.addFlashAttribute("sucesso", "Tarefa excluída com sucesso!");
         return "redirect:/tarefas";
+    }
+
+    // -------------------------------------------------------
+    // RELATÓRIO PDF
+    // -------------------------------------------------------
+    @GetMapping("/tarefas/relatorio")
+    @ResponseBody
+    public ResponseEntity<byte[]> gerarRelatorio(
+            @AuthenticationPrincipal UsuarioDetails principal,
+            @RequestParam(defaultValue = "") String busca,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String importancia,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicioFrom,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicioTo,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fimFrom,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fimTo) {
+
+        List<Tarefa> tarefas = service.listarParaRelatorio(
+                busca, status, importancia, inicioFrom, inicioTo, fimFrom, fimTo,
+                principal.getUsuario());
+
+        RelatorioService.Filtros filtros = new RelatorioService.Filtros(
+                busca, status, importancia, inicioFrom, inicioTo, fimFrom, fimTo);
+
+        byte[] pdf = relatorioService.gerar(tarefas, principal.getUsuario(), filtros);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=tarefas-bilca.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
     }
 
     // -------------------------------------------------------

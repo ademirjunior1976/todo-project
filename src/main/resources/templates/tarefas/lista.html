@@ -15,7 +15,79 @@
                 <span th:text="${tituloLista}"></span>
             </p>
         </div>
-        <a th:href="@{/tarefas/novo}" class="btn btn--primary">+ Nova Tarefa</a>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+            <button type="button" class="btn btn--ghost" onclick="document.getElementById('modalPdf').classList.add('is-open')">
+                📄 Relatório de Tarefas
+            </button>
+            <a th:href="@{/tarefas/novo}" class="btn btn--primary">+ Nova Tarefa</a>
+        </div>
+    </div>
+
+    <!-- Modal de Filtros para PDF -->
+    <div id="modalPdf" class="modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-about" style="max-width:480px;text-align:left;">
+            <button type="button" class="modal-about__close" aria-label="Fechar"
+                    onclick="document.getElementById('modalPdf').classList.remove('is-open')">✕</button>
+            <div style="font-size:1.1rem;font-weight:700;color:var(--gray-800);margin-bottom:1.25rem;">
+                📄 Exportar Relatório PDF
+            </div>
+            <form th:action="@{/tarefas/relatorio}" method="get" target="_blank">
+                <div class="form-group form-group--float" style="margin-bottom:1rem;">
+                    <input type="text" id="pdfBusca" name="busca" class="form-control" placeholder=" "/>
+                    <label class="form-label" for="pdfBusca">Buscar por título</label>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem;">
+                    <div class="form-group form-group--float">
+                        <select id="pdfStatus" name="status" class="form-control form-control--select">
+                            <option value="">Todos</option>
+                            <option value="PENDENTE">PENDENTE</option>
+                            <option value="ANDAMENTO">ANDAMENTO</option>
+                            <option value="CONCLUIDA">CONCLUIDA</option>
+                        </select>
+                        <label class="form-label" for="pdfStatus">Status</label>
+                    </div>
+                    <div class="form-group form-group--float">
+                        <select id="pdfImportancia" name="importancia" class="form-control form-control--select">
+                            <option value="">Todas</option>
+                            <option value="NORMAL">NORMAL</option>
+                            <option value="URGENTE">URGENTE</option>
+                        </select>
+                        <label class="form-label" for="pdfImportancia">Importância</label>
+                    </div>
+                </div>
+                <div style="font-size:.8rem;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem;">
+                    Período — Data de Início
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem;">
+                    <div class="form-group form-group--float">
+                        <input type="date" id="pdfInicioFrom" name="inicioFrom" class="form-control"/>
+                        <label class="form-label" for="pdfInicioFrom">De</label>
+                    </div>
+                    <div class="form-group form-group--float">
+                        <input type="date" id="pdfInicioTo" name="inicioTo" class="form-control"/>
+                        <label class="form-label" for="pdfInicioTo">Até</label>
+                    </div>
+                </div>
+                <div style="font-size:.8rem;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem;">
+                    Período — Data de Término
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem;">
+                    <div class="form-group form-group--float">
+                        <input type="date" id="pdfFimFrom" name="fimFrom" class="form-control"/>
+                        <label class="form-label" for="pdfFimFrom">De</label>
+                    </div>
+                    <div class="form-group form-group--float">
+                        <input type="date" id="pdfFimTo" name="fimTo" class="form-control"/>
+                        <label class="form-label" for="pdfFimTo">Até</label>
+                    </div>
+                </div>
+                <div style="display:flex;gap:.75rem;">
+                    <button type="submit" class="btn btn--primary" style="flex:1;">📄 Gerar PDF</button>
+                    <button type="button" class="btn btn--ghost"
+                            onclick="document.getElementById('modalPdf').classList.remove('is-open')">Cancelar</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div th:if="${sucesso}" class="alert alert--success" th:text="${sucesso}"></div>
@@ -44,12 +116,13 @@
                     <th>Dt. Término</th>
                     <th>Importância</th>
                     <th>Status</th>
+                    <th th:if="${isAdmin}">Cadastrado por</th>
                     <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:if="${#lists.isEmpty(tarefas)}">
-                    <td colspan="6" class="table__empty">Nenhuma tarefa encontrada.</td>
+                    <td th:attr="colspan=${isAdmin ? 7 : 6}" class="table__empty">Nenhuma tarefa encontrada.</td>
                 </tr>
                 <tr th:each="t : ${tarefas}"
                     th:classappend="${t.importancia.name() == 'URGENTE'} ? ' row--urgente'">
@@ -73,6 +146,8 @@
                            th:text="${t.status.name()}"
                            title="Clique para avançar: PENDENTE → ANDAMENTO → CONCLUIDA"></a>
                     </td>
+                    <td th:if="${isAdmin}" data-label="Cadastrado por"
+                        th:text="${t.usuario != null ? t.usuario.nome : '—'}"></td>
                     <td data-label="Ações">
                         <div class="table__actions">
                             <a th:href="@{/tarefas/editar/{id}(id=${t.id})}"

@@ -10,7 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -83,6 +85,25 @@ public class TarefaService {
         };
         tarefa.setStatus(novoStatus);
         return repository.save(tarefa);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Tarefa> listarParaRelatorio(
+            String busca, String status, String importancia,
+            LocalDate inicioFrom, LocalDate inicioTo,
+            LocalDate fimFrom,    LocalDate fimTo,
+            Usuario usuario) {
+        String b  = (busca == null || busca.isBlank()) ? null : busca.trim();
+        Tarefa.Status s = (status == null || status.isBlank()) ? null
+                        : Tarefa.Status.valueOf(status.toUpperCase());
+        Tarefa.Importancia i = (importancia == null || importancia.isBlank()) ? null
+                             : Tarefa.Importancia.valueOf(importancia.toUpperCase());
+        String sNome = s != null ? s.name() : null;
+        String iNome = i != null ? i.name() : null;
+        if (usuario.isAdmin()) {
+            return repository.relatorioAdmin(b, sNome, iNome, inicioFrom, inicioTo, fimFrom, fimTo);
+        }
+        return repository.relatorioUsuario(usuario, b, sNome, iNome, inicioFrom, inicioTo, fimFrom, fimTo);
     }
 
     public Map<String, Long> resumoDashboard(Usuario usuario) {

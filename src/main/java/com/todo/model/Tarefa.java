@@ -51,7 +51,7 @@ public class Tarefa {
     @Enumerated(EnumType.STRING)
     private Status status = Status.PENDENTE;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cd_usuario")
     private Usuario usuario;
 
