@@ -49,12 +49,13 @@ public class ListaComprasController {
             @AuthenticationPrincipal UsuarioDetails principal,
             @Valid @ModelAttribute("novaLista") ListaCompras lista,
             BindingResult result,
-            Model model,
             RedirectAttributes redirect) {
         if (result.hasErrors()) {
-            model.addAttribute("listas",    service.listar(principal.getUsuario()));
-            model.addAttribute("isAdmin",   principal.getUsuario().isAdmin());
-            return "compras/listas";
+            String msg = result.getFieldError("nome") != null
+                    ? result.getFieldError("nome").getDefaultMessage()
+                    : "Erro ao criar lista.";
+            redirect.addFlashAttribute("erroLista", msg);
+            return "redirect:/compras";
         }
         lista.setUsuario(principal.getUsuario());
         service.salvar(lista);
