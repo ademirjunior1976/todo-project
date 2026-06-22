@@ -40,7 +40,9 @@
         <form th:action="@{/compras/{id}/itens(id=${lista.id})}" th:object="${novoItem}" method="post"
               style="display:flex;gap:.5rem;align-items:stretch;">
             <input type="text" id="produto" th:field="*{produto}" class="form-control"
-                   placeholder="Adicionar item à lista..." style="flex:1;" autofocus/>
+                   placeholder="Nome do produto..." style="flex:1;" autofocus/>
+            <input type="number" id="quantidade" th:field="*{quantidade}" class="form-control"
+                   placeholder="Qtd." min="1" style="width:80px;"/>
             <button type="submit" class="btn btn--primary">+ Adicionar</button>
         </form>
     </div>
@@ -55,15 +57,18 @@
             <li th:each="item : ${itens}"
                 class="compra-item"
                 th:classappend="${item.comprado} ? ' compra-item--comprado'">
-                <a th:href="@{/compras/{lid}/itens/{iid}/toggle(lid=${lista.id},iid=${item.id})}"
-                   class="checkbox-toggle"
-                   th:classappend="${item.comprado} ? ' checked'"
-                   title="Marcar como comprado">
-                    <span th:text="${item.comprado} ? '✓' : ''"></span>
-                </a>
+                <input type="checkbox"
+                       th:checked="${item.comprado}"
+                       th:data-url="@{/compras/{lid}/itens/{iid}/toggle(lid=${lista.id},iid=${item.id})}"
+                       onchange="window.location=this.dataset.url"
+                       style="width:1.1rem;height:1.1rem;cursor:pointer;accent-color:#17a865;flex-shrink:0;"/>
                 <span style="flex:1;font-size:.975rem;"
-                      th:classappend="${item.comprado} ? 'riscado'"
-                      th:text="${item.produto}"></span>
+                      th:classappend="${item.comprado} ? 'riscado'">
+                    <span th:text="${item.produto}"></span>
+                    <span th:if="${item.quantidade != null}"
+                          style="font-size:.82rem;color:var(--gray-400);margin-left:.35rem;"
+                          th:text="'(' + ${item.quantidade} + ')'"></span>
+                </span>
                 <a th:href="@{/compras/{lid}/itens/{iid}/excluir(lid=${lista.id},iid=${item.id})}"
                    class="btn btn--sm btn--danger"
                    onclick="return confirm('Remover este item?')"
