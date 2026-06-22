@@ -50,6 +50,7 @@
 
             <div class="card-item__footer">
                 <a th:href="@{/compras/{id}(id=${l.id})}" class="btn btn--primary btn--sm">Ver itens</a>
+                <a th:href="@{/compras/{id}/pdf(id=${l.id})}" class="btn btn--ghost btn--sm">⬇ PDF</a>
                 <a th:href="@{/compras/{id}/excluir(id=${l.id})}" class="btn btn--danger btn--sm"
                    onclick="return confirm('Excluir esta lista e todos os seus itens?')">Excluir</a>
             </div>

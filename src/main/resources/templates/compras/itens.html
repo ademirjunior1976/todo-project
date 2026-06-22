@@ -17,10 +17,7 @@
                 <span th:text="${lista.nome}"></span>
             </p>
         </div>
-        <div style="display:flex;gap:.5rem;">
-            <a th:href="@{/compras/{id}/pdf(id=${lista.id})}" class="btn btn--ghost">⬇ PDF</a>
-            <a th:href="@{/compras}" class="btn btn--ghost">← Voltar</a>
-        </div>
+        <a th:href="@{/compras}" class="btn btn--ghost">← Voltar</a>
     </div>
 
     <div th:if="${sucesso}" class="alert alert--success" th:text="${sucesso}"></div>
