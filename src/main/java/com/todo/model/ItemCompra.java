@@ -59,7 +59,7 @@ public class ItemCompra {
     @Column(name = "nm_produto", nullable = false, length = 100)
     private String produto;
 
-    @Column(name = "qt_quantidade", precision = 10, scale = 3)
+    @Column(name = "qt_quantidade")
     private Double quantidade;
 
     @Column(name = "ds_unidade", nullable = false, length = 20)
