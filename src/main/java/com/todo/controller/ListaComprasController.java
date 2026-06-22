@@ -4,8 +4,12 @@ import com.todo.model.ItemCompra;
 import com.todo.model.ListaCompras;
 import com.todo.model.UsuarioDetails;
 import com.todo.service.ListaComprasService;
+import com.todo.service.RelatorioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +26,7 @@ import java.util.Map;
 public class ListaComprasController {
 
     private final ListaComprasService service;
+    private final RelatorioService relatorioService;
 
     // -------------------------------------------------------
     // LISTAS
@@ -106,6 +111,19 @@ public class ListaComprasController {
     public String toggleComprado(@PathVariable Long listaId, @PathVariable Long itemId) {
         service.toggleComprado(listaId, itemId);
         return "redirect:/compras/" + listaId;
+    }
+
+    @GetMapping("/{id}/pdf")
+    public ResponseEntity<byte[]> pdf(@PathVariable Long id,
+                                      @AuthenticationPrincipal UsuarioDetails principal) {
+        ListaCompras lista = service.buscarPorId(id);
+        List<ItemCompra> itens = service.listarItens(lista);
+        byte[] pdf = relatorioService.gerarListaCompras(lista, itens, principal.getUsuario());
+        String nome = lista.getNome().toLowerCase().replaceAll("[^a-z0-9]", "-");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=compras-" + nome + ".pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
     }
 
     @GetMapping("/{listaId}/itens/{itemId}/excluir")
