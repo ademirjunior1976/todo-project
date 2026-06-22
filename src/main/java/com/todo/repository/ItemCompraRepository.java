@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface ItemCompraRepository extends JpaRepository<ItemCompra, Long> {
 
-    List<ItemCompra> findByListaOrderByCategoriaAscCompradoAscProdutoAsc(ListaCompras lista);
+    List<ItemCompra> findByListaOrderByCompradoAscProdutoAsc(ListaCompras lista);
 }

@@ -49,7 +49,7 @@ public class ListaComprasService {
     }
 
     public List<ItemCompra> listarItens(ListaCompras lista) {
-        return itemRepository.findByListaOrderByCategoriaAscCompradoAscProdutoAsc(lista);
+        return itemRepository.findByListaOrderByCompradoAscProdutoAsc(lista);
     }
 
     @Transactional
@@ -69,20 +69,5 @@ public class ListaComprasService {
     @Transactional
     public void excluirItem(Long itemId) {
         itemRepository.deleteById(itemId);
-    }
-
-    @Transactional
-    public void atualizarItem(ItemCompra item) {
-        ItemCompra existing = itemRepository.findById(item.getId())
-                .orElseThrow(() -> new RuntimeException("Item não encontrado: " + item.getId()));
-        existing.setProduto(item.getProduto());
-        existing.setQuantidade(item.getQuantidade());
-        existing.setUnidade(item.getUnidade());
-        existing.setCategoria(item.getCategoria());
-    }
-
-    public ItemCompra buscarItemPorId(Long itemId) {
-        return itemRepository.findById(itemId)
-                .orElseThrow(() -> new RuntimeException("Item não encontrado: " + itemId));
     }
 }

@@ -294,6 +294,8 @@ a{text-decoration:none;color:inherit}
 .checkbox-toggle{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border:2px solid var(--gray-300);border-radius:5px;cursor:pointer;color:transparent;font-size:.8rem;font-weight:700;transition:all .15s;text-decoration:none}
 .checkbox-toggle.checked{background:var(--success,#17a865);border-color:var(--success,#17a865);color:var(--white)}
 .item-comprado td{opacity:.5}
+.compra-item{display:flex;align-items:center;gap:.75rem;padding:.875rem 1.25rem;border-bottom:1px solid var(--border)}
+.compra-item--comprado{opacity:.55}
 .riscado{text-decoration:line-through;color:var(--gray-400)}
 .text-muted{color:var(--gray-400)}
 .alert--info{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;padding:.85rem 1rem;border-radius:var(--radius-sm);margin-bottom:1rem}

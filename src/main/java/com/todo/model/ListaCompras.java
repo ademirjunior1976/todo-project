@@ -32,7 +32,7 @@ public class ListaCompras {
     private Usuario usuario;
 
     @OneToMany(mappedBy = "lista", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @OrderBy("categoria ASC, comprado ASC, produto ASC")
+    @OrderBy("comprado ASC, produto ASC")
     private List<ItemCompra> itens = new ArrayList<>();
 
     @Column(name = "dt_criacao", nullable = false, updatable = false)

@@ -84,8 +84,6 @@ public class ListaComprasController {
         model.addAttribute("total",    resumo.get("total"));
         model.addAttribute("comprados",resumo.get("comprados"));
         model.addAttribute("novoItem", new ItemCompra());
-        model.addAttribute("unidades", ItemCompra.Unidade.values());
-        model.addAttribute("categorias", ItemCompra.Categoria.values());
         model.addAttribute("isAdmin",  principal.getUsuario().isAdmin());
         return "compras/itens";
     }
@@ -115,32 +113,6 @@ public class ListaComprasController {
                               RedirectAttributes redirect) {
         service.excluirItem(itemId);
         redirect.addFlashAttribute("sucesso", "Item removido.");
-        return "redirect:/compras/" + listaId;
-    }
-
-    @GetMapping("/{listaId}/itens/{itemId}/editar")
-    public String editarItem(@PathVariable Long listaId, @PathVariable Long itemId, Model model) {
-        ListaCompras lista = service.buscarPorId(listaId);
-        model.addAttribute("lista",     lista);
-        model.addAttribute("itemForm",  service.buscarItemPorId(itemId));
-        model.addAttribute("unidades",  ItemCompra.Unidade.values());
-        model.addAttribute("categorias",ItemCompra.Categoria.values());
-        return "compras/item-form";
-    }
-
-    @PostMapping("/{listaId}/itens/{itemId}/salvar")
-    public String salvarItem(@PathVariable Long listaId, @PathVariable Long itemId,
-                             @Valid @ModelAttribute("itemForm") ItemCompra item,
-                             BindingResult result, Model model, RedirectAttributes redirect) {
-        if (result.hasErrors()) {
-            model.addAttribute("lista",     service.buscarPorId(listaId));
-            model.addAttribute("unidades",  ItemCompra.Unidade.values());
-            model.addAttribute("categorias",ItemCompra.Categoria.values());
-            return "compras/item-form";
-        }
-        item.setId(itemId);
-        service.atualizarItem(item);
-        redirect.addFlashAttribute("sucesso", "Item atualizado.");
         return "redirect:/compras/" + listaId;
     }
 }
