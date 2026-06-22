@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head><title>Listas de Compras</title></head>
+<body>
+<main layout:fragment="content">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">🛒 Listas de Compras</h1>
+            <p class="page-subtitle">
+                <a th:href="@{/}" class="breadcrumb">Dashboard</a>
+                <span> › </span>
+                <span>Listas de Compras</span>
+            </p>
+        </div>
+        <button type="button" class="btn btn--primary"
+                onclick="document.getElementById('modalNovaLista').classList.add('is-open')">
+            + Nova Lista
+        </button>
+    </div>
+
+    <div th:if="${sucesso}" class="alert alert--success" th:text="${sucesso}"></div>
+    <div th:if="${erro}"    class="alert alert--danger"  th:text="${erro}"></div>
+
+    <!-- Grid de listas -->
+    <div th:if="${#lists.isEmpty(listas)}" class="alert alert--info">
+        Nenhuma lista criada ainda. Clique em <strong>+ Nova Lista</strong> para começar.
+    </div>
+
+    <div class="cards-grid" th:if="${!#lists.isEmpty(listas)}">
+        <div class="card-item" th:each="l : ${listas}">
+            <div class="card-item__header">
+                <span class="card-item__title" th:text="${l.nome}"></span>
+                <span th:if="${isAdmin}" class="badge badge--pendente"
+                      th:text="${l.usuario != null ? l.usuario.getNome() : '—'}"></span>
+            </div>
+
+            <div class="card-item__progress">
+                <div class="progress-bar">
+                    <div class="progress-bar__fill"
+                         th:style="'width:' + (${totais[l.id]} > 0 ? (${comprados[l.id]} * 100 / ${totais[l.id]}) : 0) + '%'"></div>
+                </div>
+                <span class="progress-bar__label"
+                      th:text="${comprados[l.id]} + ' de ' + ${totais[l.id]} + ' itens comprados'"></span>
+            </div>
+
+            <div class="card-item__footer">
+                <a th:href="@{/compras/{id}(id=${l.id})}" class="btn btn--primary btn--sm">Ver itens</a>
+                <a th:href="@{/compras/{id}/excluir(id=${l.id})}" class="btn btn--danger btn--sm"
+                   onclick="return confirm('Excluir esta lista e todos os seus itens?')">Excluir</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nova Lista -->
+    <div id="modalNovaLista" class="modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-about" style="max-width:420px;text-align:left;">
+            <button type="button" class="modal-about__close"
+                    onclick="document.getElementById('modalNovaLista').classList.remove('is-open')">✕</button>
+            <div style="font-size:1.1rem;font-weight:700;color:var(--gray-800);margin-bottom:1.25rem;">
+                🛒 Nova Lista de Compras
+            </div>
+            <form th:action="@{/compras}" th:object="${novaLista}" method="post">
+                <div class="form-group form-group--float" style="margin-bottom:1.25rem;">
+                    <input type="text" id="nomeLista" th:field="*{nome}" class="form-control" placeholder=" " required/>
+                    <label class="form-label" for="nomeLista">Nome da lista</label>
+                    <span th:if="${#fields.hasErrors('nome')}" class="form-error" th:errors="*{nome}"></span>
+                </div>
+                <div style="display:flex;gap:.75rem;">
+                    <button type="submit" class="btn btn--primary" style="flex:1;">Criar Lista</button>
+                    <button type="button" class="btn btn--ghost"
+                            onclick="document.getElementById('modalNovaLista').classList.remove('is-open')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

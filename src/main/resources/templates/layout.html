@@ -20,6 +20,7 @@
     <nav class="topbar__nav">
         <a th:href="@{/}">Dashboard</a>
         <a th:href="@{/tarefas}">Tarefas</a>
+        <a th:href="@{/compras}">Compras</a>
         <a th:href="@{/usuarios}" sec:authorize="hasRole('ADMIN')">Usuários</a>
         <a th:href="@{/perfil}" sec:authorize="!hasRole('ADMIN')">Meu Perfil</a>
         <span class="topbar__user" sec:authentication="principal.nome"></span>
