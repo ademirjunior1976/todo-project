@@ -139,6 +139,19 @@ public class ListaComprasController {
                 .body(pdf);
     }
 
+    @PostMapping("/{listaId}/itens/{itemId}/editar")
+    public String editarItem(@PathVariable Long listaId, @PathVariable Long itemId,
+                             @RequestParam String produto,
+                             @RequestParam(required = false) Integer quantidade,
+                             RedirectAttributes redirect) {
+        if (produto == null || produto.isBlank()) {
+            redirect.addFlashAttribute("erro", "O nome do produto não pode ser vazio.");
+            return "redirect:/compras/" + listaId;
+        }
+        service.atualizarItem(itemId, produto, quantidade);
+        return "redirect:/compras/" + listaId;
+    }
+
     @GetMapping("/{listaId}/itens/{itemId}/excluir")
     public String excluirItem(@PathVariable Long listaId, @PathVariable Long itemId,
                               RedirectAttributes redirect) {

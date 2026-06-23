@@ -73,6 +73,14 @@ public class ListaComprasService {
     }
 
     @Transactional
+    public void atualizarItem(Long itemId, String produto, Integer quantidade) {
+        ItemCompra item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new RuntimeException("Item não encontrado: " + itemId));
+        item.setProduto(produto.trim());
+        item.setQuantidade(quantidade);
+    }
+
+    @Transactional
     public void excluirItem(Long itemId) {
         itemRepository.deleteById(itemId);
     }

@@ -52,10 +52,10 @@
                 <a th:href="@{/compras/{id}(id=${l.id})}" class="btn btn--primary btn--sm">Ver itens</a>
                 <button type="button" class="btn btn--ghost btn--sm"
                         th:data-id="${l.id}" th:data-nome="${l.nome}"
-                        onclick="abrirEditar(this)">✏️ Editar</button>
-                <a th:href="@{/compras/{id}/pdf(id=${l.id})}" class="btn btn--ghost btn--sm">⬇ PDF</a>
+                        onclick="abrirEditar(this)" title="Editar lista">✏️</button>
+                <a th:href="@{/compras/{id}/pdf(id=${l.id})}" class="btn btn--ghost btn--sm" title="Baixar PDF">⬇ PDF</a>
                 <a th:href="@{/compras/{id}/excluir(id=${l.id})}" class="btn btn--danger btn--sm"
-                   onclick="return confirm('Excluir esta lista e todos os seus itens?')">Excluir</a>
+                   onclick="return confirm('Excluir esta lista e todos os seus itens?')" title="Excluir lista">🗑️</a>
             </div>
         </div>
     </div>
