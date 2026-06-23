@@ -6,7 +6,8 @@
 <body>
 <main layout:fragment="content">
 
-    <div class="page-header" style="margin-bottom:.75rem;">
+    <!-- Cabeçalho: título | gráfico circular | botão voltar -->
+    <div class="page-header" style="margin-bottom:.75rem;align-items:center;">
         <div>
             <h1 class="page-title">🛒 <span th:text="${lista.nome}"></span></h1>
             <p class="page-subtitle">
@@ -17,41 +18,40 @@
                 <span th:text="${lista.nome}"></span>
             </p>
         </div>
+
+        <!-- Gráfico circular centralizado no header -->
+        <div style="display:flex;align-items:center;gap:.65rem;">
+            <svg width="52" height="52" viewBox="0 0 56 56" style="flex-shrink:0;transform:rotate(-90deg)">
+                <circle cx="28" cy="28" r="22" fill="none" stroke="#e2e8f0" stroke-width="5"/>
+                <circle cx="28" cy="28" r="22" fill="none" stroke="#17a865" stroke-width="5"
+                        stroke-linecap="round" stroke-dasharray="138.23"
+                        th:style="'stroke-dashoffset:' + (${total} > 0 ? (138.23 * (${total} - ${comprados}) / ${total}) : 138.23)"/>
+            </svg>
+            <div style="line-height:1.3;">
+                <div style="font-size:.95rem;font-weight:700;color:var(--gray-800);"
+                     th:text="${comprados} + ' / ' + ${total}"></div>
+                <div style="font-size:.72rem;color:var(--gray-400);">comprados</div>
+            </div>
+        </div>
+
         <a th:href="@{/compras}" class="btn btn--ghost">← Voltar</a>
     </div>
 
     <div th:if="${sucesso}" class="alert alert--success" th:text="${sucesso}"></div>
     <div th:if="${erro}"    class="alert alert--danger"  th:text="${erro}"></div>
 
-    <!-- Progresso circular + formulário na mesma linha -->
+    <!-- Formulário de novo item -->
     <div class="table-wrapper" style="margin-bottom:.75rem;padding:.75rem 1.25rem;">
-        <div style="display:flex;align-items:center;gap:1rem;">
-
-            <!-- Gráfico circular -->
-            <svg width="54" height="54" viewBox="0 0 56 56" style="flex-shrink:0;transform:rotate(-90deg)">
-                <circle cx="28" cy="28" r="22" fill="none" stroke="#e2e8f0" stroke-width="5"/>
-                <circle cx="28" cy="28" r="22" fill="none" stroke="#17a865" stroke-width="5"
-                        stroke-linecap="round" stroke-dasharray="138.23"
-                        th:style="'stroke-dashoffset:' + (${total} > 0 ? (138.23 * (${total} - ${comprados}) / ${total}) : 138.23)"/>
-            </svg>
-
-            <div style="line-height:1.3;flex-shrink:0;">
-                <div style="font-size:1rem;font-weight:700;color:var(--gray-800);"
-                     th:text="${comprados} + ' / ' + ${total}"></div>
-                <div style="font-size:.75rem;color:var(--gray-400);">comprados</div>
-            </div>
-
-            <!-- Formulário de novo item -->
-            <form th:action="@{/compras/{id}/itens(id=${lista.id})}" th:object="${novoItem}" method="post"
-                  style="display:flex;gap:.4rem;align-items:stretch;flex:1;">
-                <input type="text" id="produto" th:field="*{produto}" class="form-control"
-                       placeholder="Adicionar item..." style="flex:1;" autofocus/>
-                <input type="number" id="quantidade" th:field="*{quantidade}" class="form-control"
-                       min="1" value="1" style="width:52px;flex-shrink:0;padding-left:.5rem;padding-right:.3rem;"/>
-                <button type="submit" class="btn btn--primary btn--sm" style="font-size:1.2rem;padding:.35rem .7rem;">+</button>
-            </form>
-
-        </div>
+        <form th:action="@{/compras/{id}/itens(id=${lista.id})}" th:object="${novoItem}" method="post"
+              style="display:flex;gap:.4rem;align-items:stretch;">
+            <input type="text" id="produto" th:field="*{produto}" class="form-control"
+                   placeholder="Adicionar item..." style="flex:1;font-size:1rem;" autofocus/>
+            <input type="number" id="quantidade" th:field="*{quantidade}" class="form-control"
+                   min="1" value="1"
+                   style="width:38px;flex-shrink:0;padding-left:.4rem;padding-right:.1rem;text-align:center;font-size:.85rem;"/>
+            <button type="submit" class="btn btn--primary btn--sm"
+                    style="font-size:1.25rem;padding:.35rem .75rem;line-height:1;">+</button>
+        </form>
     </div>
 
     <!-- Lista de itens -->
@@ -69,7 +69,7 @@
                        th:data-url="@{/compras/{lid}/itens/{iid}/toggle(lid=${lista.id},iid=${item.id})}"
                        onchange="window.location=this.dataset.url"
                        style="width:1.1rem;height:1.1rem;cursor:pointer;accent-color:#17a865;flex-shrink:0;"/>
-                <span style="flex:1;font-size:.975rem;"
+                <span style="flex:1;font-size:1.1rem;"
                       th:classappend="${item.comprado} ? 'riscado'">
                     <span th:if="${item.quantidade != null}"
                           style="font-weight:600;margin-right:.3rem;"
@@ -121,7 +121,7 @@
 
     <script>
         function abrirEditarItem(btn) {
-            document.getElementById('editProduto').value  = btn.dataset.produto;
+            document.getElementById('editProduto').value    = btn.dataset.produto;
             document.getElementById('editQuantidade').value = btn.dataset.quantidade || '';
             document.getElementById('formEditarItem').action =
                 '/compras/' + btn.dataset.lid + '/itens/' + btn.dataset.iid + '/editar';
