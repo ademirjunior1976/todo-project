@@ -101,7 +101,9 @@ public class ListaComprasController {
         model.addAttribute("itens",    service.listarItens(lista));
         model.addAttribute("total",    resumo.get("total"));
         model.addAttribute("comprados",resumo.get("comprados"));
-        model.addAttribute("novoItem", new ItemCompra());
+        ItemCompra novoItem = new ItemCompra();
+        novoItem.setQuantidade(1);
+        model.addAttribute("novoItem", novoItem);
         model.addAttribute("isAdmin",  principal.getUsuario().isAdmin());
         return "compras/itens";
     }
