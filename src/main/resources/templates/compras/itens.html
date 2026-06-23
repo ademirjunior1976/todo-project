@@ -19,22 +19,24 @@
             </p>
         </div>
 
-        <!-- Gráfico circular centralizado no header -->
-        <div style="display:flex;align-items:center;gap:.65rem;">
-            <svg width="52" height="52" viewBox="0 0 56 56" style="flex-shrink:0;transform:rotate(-90deg)">
-                <circle cx="28" cy="28" r="22" fill="none" stroke="#e2e8f0" stroke-width="5"/>
-                <circle cx="28" cy="28" r="22" fill="none" stroke="#17a865" stroke-width="5"
-                        stroke-linecap="round" stroke-dasharray="138.23"
-                        th:style="'stroke-dashoffset:' + (${total} > 0 ? (138.23 * (${total} - ${comprados}) / ${total}) : 138.23)"/>
-            </svg>
-            <div style="line-height:1.3;">
-                <div style="font-size:.95rem;font-weight:700;color:var(--gray-800);"
-                     th:text="${comprados} + ' / ' + ${total}"></div>
-                <div style="font-size:.72rem;color:var(--gray-400);">comprados</div>
+        <div style="display:flex;align-items:center;gap:1rem;">
+            <a th:href="@{/compras}" class="btn btn--ghost">← Voltar</a>
+
+            <!-- Gráfico circular -->
+            <div style="display:flex;align-items:center;gap:.65rem;">
+                <svg width="52" height="52" viewBox="0 0 56 56" style="flex-shrink:0;transform:rotate(-90deg)">
+                    <circle cx="28" cy="28" r="22" fill="none" stroke="#e2e8f0" stroke-width="5"/>
+                    <circle cx="28" cy="28" r="22" fill="none" stroke="#17a865" stroke-width="5"
+                            stroke-linecap="round" stroke-dasharray="138.23"
+                            th:style="'stroke-dashoffset:' + (${total} > 0 ? (138.23 * (${total} - ${comprados}) / ${total}) : 138.23)"/>
+                </svg>
+                <div style="line-height:1.3;">
+                    <div style="font-size:.95rem;font-weight:700;color:var(--gray-800);"
+                         th:text="${comprados} + ' / ' + ${total}"></div>
+                    <div style="font-size:.72rem;color:var(--gray-400);">comprados</div>
+                </div>
             </div>
         </div>
-
-        <a th:href="@{/compras}" class="btn btn--ghost">← Voltar</a>
     </div>
 
     <div th:if="${sucesso}" class="alert alert--success" th:text="${sucesso}"></div>
@@ -69,7 +71,7 @@
                        th:data-url="@{/compras/{lid}/itens/{iid}/toggle(lid=${lista.id},iid=${item.id})}"
                        onchange="window.location=this.dataset.url"
                        style="width:1.1rem;height:1.1rem;cursor:pointer;accent-color:#17a865;flex-shrink:0;"/>
-                <span style="flex:1;font-size:1.1rem;"
+                <span style="flex:1;font-size:.95rem;"
                       th:classappend="${item.comprado} ? 'riscado'">
                     <span th:if="${item.quantidade != null}"
                           style="font-weight:600;margin-right:.3rem;"
