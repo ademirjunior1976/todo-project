@@ -37,6 +37,12 @@ public class ListaComprasService {
     }
 
     @Transactional
+    public void renomear(Long id, String nome) {
+        ListaCompras lista = buscarPorId(id);
+        lista.setNome(nome);
+    }
+
+    @Transactional
     public void excluir(Long id) {
         listaRepository.deleteById(id);
     }

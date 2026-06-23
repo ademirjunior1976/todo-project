@@ -50,6 +50,9 @@
 
             <div class="card-item__footer">
                 <a th:href="@{/compras/{id}(id=${l.id})}" class="btn btn--primary btn--sm">Ver itens</a>
+                <button type="button" class="btn btn--ghost btn--sm"
+                        th:data-id="${l.id}" th:data-nome="${l.nome}"
+                        onclick="abrirEditar(this)">✏️ Editar</button>
                 <a th:href="@{/compras/{id}/pdf(id=${l.id})}" class="btn btn--ghost btn--sm">⬇ PDF</a>
                 <a th:href="@{/compras/{id}/excluir(id=${l.id})}" class="btn btn--danger btn--sm"
                    onclick="return confirm('Excluir esta lista e todos os seus itens?')">Excluir</a>
@@ -80,11 +83,42 @@
         </div>
     </div>
 
+    <!-- Modal Editar Lista -->
+    <div id="modalEditarLista" class="modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-about" style="max-width:420px;text-align:left;">
+            <button type="button" class="modal-about__close"
+                    onclick="document.getElementById('modalEditarLista').classList.remove('is-open')">✕</button>
+            <div style="font-size:1.1rem;font-weight:700;color:var(--gray-800);margin-bottom:1.25rem;">
+                ✏️ Editar Lista
+            </div>
+            <form id="formEditar" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <div class="form-group form-group--float" style="margin-bottom:1.25rem;">
+                    <input type="text" id="nomeEditar" name="nome" class="form-control" placeholder=" " required/>
+                    <label class="form-label" for="nomeEditar">Nome da lista</label>
+                </div>
+                <div style="display:flex;gap:.75rem;">
+                    <button type="submit" class="btn btn--primary" style="flex:1;">Salvar</button>
+                    <button type="button" class="btn btn--ghost"
+                            onclick="document.getElementById('modalEditarLista').classList.remove('is-open')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Reabrir modal se houver erro de validação -->
     <script th:if="${erroLista}">
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('modalNovaLista').classList.add('is-open');
         });
+    </script>
+
+    <script>
+        function abrirEditar(btn) {
+            document.getElementById('nomeEditar').value = btn.dataset.nome;
+            document.getElementById('formEditar').action = '/compras/' + btn.dataset.id + '/editar';
+            document.getElementById('modalEditarLista').classList.add('is-open');
+        }
     </script>
 
 </main>

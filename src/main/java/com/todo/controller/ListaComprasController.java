@@ -68,6 +68,19 @@ public class ListaComprasController {
         return "redirect:/compras";
     }
 
+    @PostMapping("/{id}/editar")
+    public String editarLista(@PathVariable Long id,
+                              @RequestParam String nome,
+                              RedirectAttributes redirect) {
+        if (nome == null || nome.isBlank()) {
+            redirect.addFlashAttribute("erro", "O nome da lista não pode ser vazio.");
+            return "redirect:/compras";
+        }
+        service.renomear(id, nome.trim());
+        redirect.addFlashAttribute("sucesso", "Lista renomeada com sucesso!");
+        return "redirect:/compras";
+    }
+
     @GetMapping("/{id}/excluir")
     public String excluirLista(@PathVariable Long id, RedirectAttributes redirect) {
         service.excluir(id);
